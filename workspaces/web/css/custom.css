@@ -12,6 +12,31 @@ body {
 	background: #eee !important;	
 }
 
+.no-radius{
+    border-radius: 0;
+}
+
+.margin-remove{
+    margin: 0;
+}
+
+.main-heading{
+    -webkit-box-shadow: 0px 1px 5px 0px rgba(50, 50, 50, 0.43);
+    -moz-box-shadow:    0px 1px 5px 0px rgba(50, 50, 50, 0.43);
+    box-shadow:         0px 1px 5px 0px rgba(50, 50, 50, 0.43);
+    margin-bottom: 10px;
+}
+
+.full-screen{
+    height: 100vh;
+    padding: 0;
+    margin: 0;
+    overflow: hidden;
+    border: none;
+}
+
+
+
 .wrapper {	
 	margin-top: 80px;
   margin-bottom: 80px;
@@ -56,4 +81,70 @@ body {
 	  border-top-left-radius: 0;
 	  border-top-right-radius: 0;
 	}
+}
+
+
+/************************************************
+ * Side Bar 
+ ************************************************/
+.icon-bar{
+  background: #f7f7f9;
+  background: #e1e1e8;
+  border: 1px solid #e1e1e8;
+  border: 1px solid #d0d0d6;
+  border-top: none;
+  width: 100px;
+  height: 100vh;
+  position: fixed;
+  left: -95px;
+  top: 39px;
+}
+
+.icon-bar:hover{
+  left: 0;
+}
+
+.icon-bar ul{
+  margin: 0;
+  padding: 0;
+}
+
+.icon-bar ul .icon{
+  width: 50px;
+  height: 50px;
+  text-indent: -9999px;
+  background-size: contain;
+  margin: 25px;
+  padding: 0;
+  list-style-type: none;
+}
+
+.icon-bar ul li a{
+  width: 50px;
+  height: 50px;
+  display: inline-block;
+}
+
+.chat-icon{
+  background: url("../images/icon-05.png");
+}
+
+.calendar-icon{
+  background: url("../images/icon-02.png");
+}
+
+.todo-icon{
+  background: url("../images/icon-06.png");
+}
+
+.document-icon{
+  background: url("../images/icon-03.png");
+}
+
+.assignment-icon{
+  background: url("../images/icon-04.png");
+}
+
+.group-icon{
+  background: url("../images/icon-07.png");
 }
