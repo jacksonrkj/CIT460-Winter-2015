@@ -18,10 +18,13 @@ and open the template in the editor.
         <!-- Include all compiled plugins (below), or include individual files as needed -->
         <script src="../js/bootstrap.min.js"></script>
         <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.min.js"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.1/angular-route.min.js"></script>
+        <script src="../js/app.js"></script>
+
         <!--<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.0.3/angular-sanitize.js"></script>-->
 
     </head>
-    <body ng-app="" ng-controller="personController" ng-model="mustHide">
+    <body ng-app="workspaces" ng-controller="personController" ng-model="mustHide">
              <div class=" icon-bar">
                 <ul>
                     <li class="icon chat-icon" ng-click="angularJsAjax(0)"><a>Chat</a></li>
@@ -48,37 +51,7 @@ and open the template in the editor.
         <script>
 
                     function personController($scope, $http, $sce) {
-                        $scope.mustHide = true;
-
-                        $scope.fullName = function () {
-                            return $scope.firstName + " " + $scope.lastName;
-                        };
                         
-                        $scope.remove = function () {
-                            console.log("hide");
-                            $scope.mustHide = true;  
-                        };
-
-                        $scope.angularJsAjax = function (index) {
-                            var url;
-
-                            switch (index) {
-                                case 5:
-                                    url = "../jsp/groups.jsp";
-                                    break;
-                                default :
-                                    url = "../jsp/angularAjax.jsp";
-                                    break;
-                            }
-
-
-                            $http.get(url)
-                                    .success(function (response) {
-                                        $scope.angularOutput = response;
-                                        $scope.angularOutput = $sce.trustAsHtml($scope.angularOutput);
-                                    });
-                            $scope.mustHide = false;
-                        };
                     }
 
         </script>
