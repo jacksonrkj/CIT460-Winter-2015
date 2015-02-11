@@ -41,7 +41,7 @@ and open the template in the editor.
 
 
             <div class="row">
-                <div class="col-sm-5 col-sm-offset-1" ng-bind-html="angularOutput"></div>
+                <div ng-hide="mustHide"  class="col-sm-5 col-sm-offset-1" ng-bind-html="angularOutput"></div>
             </div>
         </div>
 
@@ -55,8 +55,8 @@ and open the template in the editor.
                         };
                         
                         $scope.remove = function () {
-                            
-                            
+                            console.log("hide");
+                            $scope.mustHide = true;  
                         };
 
                         $scope.angularJsAjax = function (index) {
@@ -64,7 +64,6 @@ and open the template in the editor.
 
                             switch (index) {
                                 case 5:
-                                    console.log("Case 5");
                                     url = "../jsp/groups.jsp";
                                     break;
                                 default :
