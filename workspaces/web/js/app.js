@@ -11,6 +11,7 @@ var app = angular.module('workspaces', ['ngRoute']);
 app.controller('personController', ['$scope', '$http', '$sce', function ($scope, $http, $sce) {
 
         $scope.mustHide = true;
+        $scope.chatHide = true; 
 
         $scope.fullName = function () {
             return $scope.firstName + " " + $scope.lastName;
@@ -20,8 +21,12 @@ app.controller('personController', ['$scope', '$http', '$sce', function ($scope,
 
         $scope.angularJsAjax = function (index) {
             var url;
-
+            console.log("Log");
             switch (index) {
+                case 0: 
+                    console.log("case 0");
+                    url = "../html/chat.html";
+                    break;
                 case 5:
                     url = "../jsp/groups.jsp";
                     break;
@@ -33,10 +38,27 @@ app.controller('personController', ['$scope', '$http', '$sce', function ($scope,
 
             $http.get(url)
                     .success(function (response) {
-                        $scope.angularOutput = response;
-                        $scope.angularOutput = $sce.trustAsHtml($scope.angularOutput);
+                        switch (index){
+                            case 0:
+                                $scope.chatOutput = response; 
+                                $scope.chatOutput = $sce.trustAsHtml($scope.chatOutput);
+                                $scope.chatHide = false; 
+                                break; 
+                            case 5: 
+                                $scope.groupOutput = response; 
+                                $scope.groupOutput = $sce.trustAsHtml($scope.groupOutput);
+                                $scope.groupHide = false; 
+                                break; 
+                            default:                        
+                                $scope.angularOutput = response;
+                                $scope.angularOutput = $sce.trustAsHtml($scope.angularOutput);
+                                $scope.mustHide = false;
+                        }
+                        
+
+
                     });
-            $scope.mustHide = false;
+
         };
 
     }]);
