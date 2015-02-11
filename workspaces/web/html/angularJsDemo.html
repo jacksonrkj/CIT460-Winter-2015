@@ -1,0 +1,37 @@
+    <!DOCTYPE html>
+
+    <html>
+        <head>
+            <title>Example of using AngularJS to send HttpRequest and replace output</title>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.min.js"></script>
+
+        </head>
+        <body ng-app="" ng-controller="personController" ng-model="mustHide">
+            <div style="margin-top: 30px;">
+                
+                <button type="button" ng-click="angularJsAjax()">AJAX using AngularJs</button>
+                <div ng-hide="mustHide" 
+                     style="margin-top: 30px; width: 4in; height: .25in; border: solid thin black; text-align: center; background-color: lightgreen; padding: 15px"> {{ angularOutput }} </div>
+            </div>
+            
+            <script>
+
+                function personController($scope, $http) {
+                    $scope.mustHide = true;
+
+                    $scope.fullName = function() {
+                        return $scope.firstName + " " + $scope.lastName;
+                    };
+
+                    $scope.angularJsAjax = function () {
+                        $http.get("../jsp/angularAjax.jsp")
+                        .success(function(response) {$scope.angularOutput = response;});
+                        $scope.mustHide = false;                        
+                    };
+                }
+
+                </script>
+        </body>
+    </html>

@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html>
+    <head>
+        <title>TODO supply a title</title>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+        <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.26/angular.min.js"></script>
+        
+        <script type="text/javascript">
+            var xmlhttp = null;
+            
+            var loadXMLDoc = function(url, parameters, callBackFunciton) {
+
+            if (window.XMLHttpRequest) { // code for IE7+, Firefox, Chrome, Opera, Safari
+                    xmlhttp =  new XMLHttpRequest();
+            }
+            else { // code for IE6, IE5
+                    xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+            }
+
+            xmlhttp.onreadystatechange = callBackFunciton;
+            xmlhttp.open('POST', url ,true);
+            xmlhttp.send(parameters);
+	
+            }
+            
+            
+            var regularCallback = function() {
+                    if (xmlhttp.readyState==4 && xmlhttp.status==200) {
+                            document.getElementById("regularAjaxId").innerHTML=xmlhttp.responseText;
+                }	
+            }
+        </script>
+
+        
+    </head>
+    <body>
+        <div ng-app="" ng-controller="personController">
+         
+        
+            <div id="regularAjaxId" style="margin-top:50px">Regular Ajax</div><br>
+            <div ng-app="" ng-controller="customersController"></div>
+            <div id="angularJsAjaxId"> {{ angularOutput }} </div>
+
+            <button type="button" onclick="loadXMLDoc('../jsp/regularAjax.jsp', '', regularCallback)">AJAX using Javascript function</button>
+
+            <p style="margin-top: .25in"><button type="button" ng-click="$scope.angularJsAjax($scope, $http)">AJAX using AngularJs</button></p>
+        </div>
+        
+        
+         <script type="text/javascript">
+ 
+           function personController($scope) {
+                $scope.angularOutput = "";
+                
+                $scope.angularJsAjax = function ($scope,$http) {
+                    $http.get("../jsp/angularAjax.jsp")
+                    .success(function(response) {$scope.angularOutput = response;});
+                }
+            }
+            
+            
+        </script>
+       
+    </body>
+</html>
