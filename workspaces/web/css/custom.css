@@ -103,6 +103,7 @@ body {
   position: fixed;
   left: -95px;
   top: 39px;
+  z-index: 9999;
 }
 
 .icon-bar:hover{
