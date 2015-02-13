@@ -8,7 +8,7 @@
 <!DOCTYPE html>
 <div class="panel panel-primary" ng-controller="assignmentsController">
     <div class="panel-heading row margin-remove">
-        <h3 class="panel-title col-xs-11">Group</h3>
+        <h3 class="panel-title col-xs-11">assignments</h3>
         <span ng-click="remove()" close class="glyphicon glyphicon-remove col-xs-1" aria-hidden="true"></span>
     </div>
     <div class="panel-body">
