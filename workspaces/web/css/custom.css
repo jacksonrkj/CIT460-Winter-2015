@@ -35,12 +35,16 @@ body {
     border: none;
 }
 
-
+.workspaceWindow{
+   margin: 0 10px;
+    
+}
 
 .wrapper {	
 	margin-top: 80px;
   margin-bottom: 80px;
 }
+
 
 .form-signin {
   max-width: 380px;
@@ -147,4 +151,31 @@ body {
 
 .group-icon{
   background: url("../images/icon-07.png");
+}
+
+/************************************************
+ * Group Styling
+ ************************************************/
+.group-members{
+    max-height: 160px;
+    overflow-y: scroll;
+}
+
+.group-members hr{
+    padding: 0;
+    margin: 10px 15px;
+}
+
+.member{
+    overflow: hidden;
+}
+
+.panel-show-groups .panel-heading{
+    width: 100%;
+    margin-left: 0;
+}
+
+.add-group-btn{
+    background: none;
+    color: #337ab7;
 }

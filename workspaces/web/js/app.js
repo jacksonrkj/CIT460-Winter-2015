@@ -8,10 +8,12 @@ function init() {
 
 var app = angular.module('workspaces', ['ngRoute']);
 
-app.controller('personController', ['$scope', '$http', '$sce', function ($scope, $http, $sce) {
+app.controller('personController', ['$scope', '$http', '$sce', '$compile', function ($scope, $http, $sce, $compile) {
 
         $scope.mustHide = true;
         $scope.chatHide = true; 
+        $scope.calendarHide = false;
+        $scope.todoHide = true; 
 
         $scope.fullName = function () {
             return $scope.firstName + " " + $scope.lastName;
@@ -21,11 +23,18 @@ app.controller('personController', ['$scope', '$http', '$sce', function ($scope,
 
         $scope.angularJsAjax = function (index) {
             var url;
-            console.log("Log");
+            var attribute; 
+            
             switch (index) {
                 case 0: 
-                    console.log("case 0");
                     url = "../html/chat.html";
+                    break;
+                case 1:
+                    $scope.calendarHide = true;
+                    url = "../html/chat.html";
+                    break; 
+                case 2: 
+                    url = "../jsp/todo.jsp";
                     break;
                 case 5:
                     url = "../jsp/groups.jsp";
@@ -44,6 +53,14 @@ app.controller('personController', ['$scope', '$http', '$sce', function ($scope,
                                 $scope.chatOutput = $sce.trustAsHtml($scope.chatOutput);
                                 $scope.chatHide = false; 
                                 break; 
+                            case 1: 
+                                $scope.calendarHide = false;
+                                break; 
+                            case 2:
+                                $scope.todoOutput = response; 
+                                $scope.todoOutput = $sce.trustAsHtml($scope.todoOutput);
+                                $scope.todoHide = false; 
+                                break; 
                             case 5: 
                                 $scope.groupOutput = response; 
                                 $scope.groupOutput = $sce.trustAsHtml($scope.groupOutput);
@@ -58,6 +75,7 @@ app.controller('personController', ['$scope', '$http', '$sce', function ($scope,
 
 
                     });
+                
 
         };
 
@@ -71,18 +89,11 @@ app.controller('groupsController', ['$scope', '$http', '$sce', function ($scope,
         
 }]);
 
-  app.directive('close', function(){
-    return {
-      restrict: 'A',
-      link: function(scope, element, attrs){
-        element.click(function(){
-          alert('hi');
-          console.log('Hi');
-          
-        });
-      }
-    }
-  });
+
+$('.removePanel').click(function() {
+  alert( "Handler for .click() called." );
+});
+
 
 // Test
 }init();
