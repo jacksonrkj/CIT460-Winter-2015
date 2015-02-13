@@ -14,6 +14,7 @@ app.controller('personController', ['$scope', '$http', '$sce', '$compile', funct
         $scope.chatHide = true; 
         $scope.calendarHide = false;
         $scope.todoHide = true; 
+        $scope.assignmentHide = true;
 
         $scope.fullName = function () {
             return $scope.firstName + " " + $scope.lastName;
@@ -35,6 +36,9 @@ app.controller('personController', ['$scope', '$http', '$sce', '$compile', funct
                     break; 
                 case 2: 
                     url = "../jsp/todo.jsp";
+                    break;
+                case 4:
+                    url = "../jsp/assignments.jsp";
                     break;
                 case 5:
                     url = "../jsp/groups.jsp";
@@ -61,6 +65,11 @@ app.controller('personController', ['$scope', '$http', '$sce', '$compile', funct
                                 $scope.todoOutput = $sce.trustAsHtml($scope.todoOutput);
                                 $scope.todoHide = false; 
                                 break; 
+                            case 4:
+                                $scope.assignmentOutput = response; 
+                                $scope.assignmentOutput = $sce.trustAsHtml($scope.assignmentOutput);
+                                $scope.assignmentHide = false; 
+                                break;
                             case 5: 
                                 $scope.groupOutput = response; 
                                 $scope.groupOutput = $sce.trustAsHtml($scope.groupOutput);

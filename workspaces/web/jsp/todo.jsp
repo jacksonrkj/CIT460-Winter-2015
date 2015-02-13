@@ -4,7 +4,7 @@
     Author     : Preston
 --%>
 
-<div class="panel panel-primary" ng-controller="groupsController">
+<div class="todo-panel panel panel-primary" ng-controller="groupsController">
     <div class="panel-heading row margin-remove">
         <h3 class="panel-title col-xs-11">ToDo List</h3>
         <span  class="removePanel glyphicon glyphicon-remove col-xs-1" aria-hidden="true"></span>
