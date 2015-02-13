@@ -8,9 +8,13 @@ function init() {
 
 var app = angular.module('workspaces', ['ngRoute']);
 
-app.controller('personController', ['$scope', '$http', '$sce', function ($scope, $http, $sce) {
+app.controller('personController', ['$scope', '$http', '$sce', '$compile', function ($scope, $http, $sce, $compile) {
 
         $scope.mustHide = true;
+        $scope.chatHide = true; 
+        $scope.calendarHide = false;
+        $scope.todoHide = true; 
+        $scope.assignmentHide = true;
 
         $scope.fullName = function () {
             return $scope.firstName + " " + $scope.lastName;
@@ -20,8 +24,22 @@ app.controller('personController', ['$scope', '$http', '$sce', function ($scope,
 
         $scope.angularJsAjax = function (index) {
             var url;
-
+            var attribute; 
+            
             switch (index) {
+                case 0: 
+                    url = "../html/chat.html";
+                    break;
+                case 1:
+                    $scope.calendarHide = true;
+                    url = "../html/chat.html";
+                    break; 
+                case 2: 
+                    url = "../jsp/todo.jsp";
+                    break;
+                case 4:
+                    url = "../jsp/assignments.jsp";
+                    break;
                 case 5:
                     url = "../jsp/groups.jsp";
                     break;
@@ -33,10 +51,41 @@ app.controller('personController', ['$scope', '$http', '$sce', function ($scope,
 
             $http.get(url)
                     .success(function (response) {
-                        $scope.angularOutput = response;
-                        $scope.angularOutput = $sce.trustAsHtml($scope.angularOutput);
+                        switch (index){
+                            case 0:
+                                $scope.chatOutput = response; 
+                                $scope.chatOutput = $sce.trustAsHtml($scope.chatOutput);
+                                $scope.chatHide = false; 
+                                break; 
+                            case 1: 
+                                $scope.calendarHide = false;
+                                break; 
+                            case 2:
+                                $scope.todoOutput = response; 
+                                $scope.todoOutput = $sce.trustAsHtml($scope.todoOutput);
+                                $scope.todoHide = false; 
+                                break; 
+                            case 4:
+                                $scope.assignmentOutput = response; 
+                                $scope.assignmentOutput = $sce.trustAsHtml($scope.assignmentOutput);
+                                $scope.assignmentHide = false; 
+                                break;
+                            case 5: 
+                                $scope.groupOutput = response; 
+                                $scope.groupOutput = $sce.trustAsHtml($scope.groupOutput);
+                                $scope.groupHide = false; 
+                                break; 
+                            default:                        
+                                $scope.angularOutput = response;
+                                $scope.angularOutput = $sce.trustAsHtml($scope.angularOutput);
+                                $scope.mustHide = false;
+                        }
+                        
+
+
                     });
-            $scope.mustHide = false;
+                
+
         };
 
     }]);
@@ -49,18 +98,11 @@ app.controller('groupsController', ['$scope', '$http', '$sce', function ($scope,
         
 }]);
 
-  app.directive('close', function(){
-    return {
-      restrict: 'A',
-      link: function(scope, element, attrs){
-        element.click(function(){
-          alert('hi');
-          console.log('Hi');
-          
-        });
-      }
-    }
-  });
+
+$('.removePanel').click(function() {
+  alert( "Handler for .click() called." );
+});
+
 
 // Test
 }init();
