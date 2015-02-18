@@ -17,7 +17,7 @@ body {
 }
 
 .margin-remove{
-    margin: 0;
+    margin: 0 !important;
 }
 
 .main-heading{
