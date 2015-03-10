@@ -12,7 +12,7 @@ import javax.persistence.PersistenceContext;
 
 /**
  *
- * @author Ryan
+ * @author jacksonrkj
  */
 @Stateless
 public class DocumentFacade extends AbstractFacade<Document> implements byui.cit460.workspaces.ejb.DocumentFacadeRemote {

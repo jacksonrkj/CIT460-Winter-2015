@@ -12,7 +12,7 @@ import javax.persistence.PersistenceContext;
 
 /**
  *
- * @author Ryan
+ * @author jacksonrkj
  */
 @Stateless
 public class WorkspaceFacade extends AbstractFacade<Workspace> implements byui.cit460.workspaces.ejb.WorkspaceFacadeRemote {

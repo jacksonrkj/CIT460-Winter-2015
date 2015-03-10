@@ -9,11 +9,10 @@ import byui.cit460.workspaces.data.Person;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 
 /**
  *
- * @author Ryan
+ * @author jacksonrkj
  */
 @Stateless
 public class PersonFacade extends AbstractFacade<Person> implements byui.cit460.workspaces.ejb.PersonFacadeRemote {
@@ -29,14 +28,4 @@ public class PersonFacade extends AbstractFacade<Person> implements byui.cit460.
         super(Person.class);
     }
     
-    
-    public String authenticateUser(String username, String password){
-        Query auth = em.createQuery("select p from Person as p where p.userName = :username and p.password = :password");
-        auth.setParameter("username", username);
-        auth.setParameter("password", password);
-        
-        Person personUser = (Person) auth.getSingleResult();
-        String documentDescriptions = null;
-        return  documentDescriptions;
-    }
 }

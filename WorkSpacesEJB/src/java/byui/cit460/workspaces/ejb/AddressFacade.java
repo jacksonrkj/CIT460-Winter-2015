@@ -12,10 +12,10 @@ import javax.persistence.PersistenceContext;
 
 /**
  *
- * @author Ryan
+ * @author jacksonrkj
  */
 @Stateless
-public class AddressFacade extends AbstractFacade<Address> implements byui.cit460.workspaces.ejb.AddressFacadeRemote {
+public class AddressFacade extends AbstractFacade<Address> implements AddressFacadeRemote {
     @PersistenceContext(unitName = "WorkSpacesEJBPU")
     private EntityManager em;
 

@@ -12,7 +12,7 @@ import javax.persistence.PersistenceContext;
 
 /**
  *
- * @author Ryan
+ * @author jacksonrkj
  */
 @Stateless
 public class MembershipFacade extends AbstractFacade<Membership> implements byui.cit460.workspaces.ejb.MembershipFacadeRemote {
