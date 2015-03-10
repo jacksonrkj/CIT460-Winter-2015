@@ -38,11 +38,13 @@ public class Document implements Serializable {
     @Basic(optional = false)
     @Column(name = "DOCUMENT_ID")
     private BigDecimal documentId;
+    
     @SequenceGenerator(name="DOC_DOCNO_GENERATOR", sequenceName="SEQDOCUMENTNO")
     @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="DOC_DOCNO_GENERATOR")
     @Basic(optional = false)
     @Column(name = "DOCUMENT_NO")
     private BigDecimal documentNo;
+    
     @Basic(optional = false)
     @Column(name = "DOC_TYPE")
     private String docType;
