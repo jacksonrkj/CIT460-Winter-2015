@@ -10,6 +10,7 @@ import byui.cit460.workspaces.data.Person;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -31,7 +32,17 @@ public class PersonFacade extends AbstractFacade<Person> implements byui.cit460.
 
     @Override
     public String authenticate(String username, String password) throws WorkspacesException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+         //To change body of generated methods, choose Tools | Templates.
+        
+        Query query = em.createQuery("SELECT p FROM Person AS p "
+                + "WHERE p.userName = :username AND p.password = :password"); 
+        
+        query.setParameter("username", username); 
+        query.setParameter("password", password);
+        Person aPerson = (Person) query.getSingleResult();
+        
+      
+        return aPerson.toString();
     }
     
 }
