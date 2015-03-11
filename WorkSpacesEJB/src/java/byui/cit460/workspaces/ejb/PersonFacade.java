@@ -40,14 +40,12 @@ public class PersonFacade extends AbstractFacade<Person> implements PersonFacade
      * @return a JSON object containing all of the objects for the main portal
      * @throws WorkspacesException 
      */
+    @Override
     public String authenticate(String username, String password) throws WorkspacesException {
-    
-        
+   
         Person person = null;
-        String portalDocuments = null;
-        
-        
-        
+        String portalDocuments = "";
+
         if (username == null || password == null) {
             throw new WorkspacesException("Invalid username and/or password");
         }
@@ -62,9 +60,9 @@ public class PersonFacade extends AbstractFacade<Person> implements PersonFacade
         
         try {
             person = (Person) query.getSingleResult(); 
-        } catch (NoResultException nre) {
+        } catch (NoResultException nre) { // thrown if no records found
             throw new WorkspacesException("Invalid username and/or password");
-        } catch (Exception e) {
+        } catch (Exception e) { // catch all other exceptions and throw custom exception
             throw new WorkspacesException(e.getMessage());
         }
         

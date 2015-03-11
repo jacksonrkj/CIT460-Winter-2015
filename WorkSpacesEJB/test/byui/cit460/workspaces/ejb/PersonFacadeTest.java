@@ -43,6 +43,11 @@ public class PersonFacadeTest {
         PersonFacadeRemote instance = (PersonFacadeRemote)container.getContext().lookup("java:global/classes/PersonFacade");
         String expResult = "";
         String result = instance.authenticate(username, password);
+        
+        System.out.println("\n\n*********************************************************************");
+        System.out.println("Person's portal documnents: \n" + result);
+        System.out.println("*********************************************************************\n\n");
+        
         //assertEquals(expResult, result);
         container.close();
         // TODO review the generated test code and remove the default call to fail.
