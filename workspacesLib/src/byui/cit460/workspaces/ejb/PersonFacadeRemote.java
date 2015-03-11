@@ -6,6 +6,7 @@
 package byui.cit460.workspaces.ejb;
 
 import byui.cit460.workspaces.data.Person;
+import byui.cit460.workshops.execeptions.WorkspacesException;
 import java.util.List;
 import javax.ejb.Remote;
 
@@ -29,5 +30,7 @@ public interface PersonFacadeRemote {
     List<Person> findRange(int[] range);
 
     int count();
+
+    public String login(String username, String password) throws WorkspacesException;
     
 }

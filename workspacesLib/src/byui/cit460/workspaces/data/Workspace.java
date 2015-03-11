@@ -53,9 +53,9 @@ public class Workspace implements Serializable {
     @Column(name = "MAX_SIZE")
     private BigInteger maxSize;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "workspace")
-    private Collection<Membership> membershipCollection;
-    @OneToMany(mappedBy = "workspaceId")
-    private Collection<Reference> referenceCollection;
+    private Collection<Membership> memberships;
+    @OneToMany(mappedBy = "workspace")
+    private Collection<Reference> references;
 
     public Workspace() {
     }
@@ -101,20 +101,20 @@ public class Workspace implements Serializable {
         this.maxSize = maxSize;
     }
 
-    public Collection<Membership> getMembershipCollection() {
-        return membershipCollection;
+    public Collection<Membership> getMemberships() {
+        return memberships;
     }
 
-    public void setMembershipCollection(Collection<Membership> membershipCollection) {
-        this.membershipCollection = membershipCollection;
+    public void setMemberships(Collection<Membership> memberships) {
+        this.memberships = memberships;
     }
 
-    public Collection<Reference> getReferenceCollection() {
-        return referenceCollection;
+    public Collection<Reference> getReferences() {
+        return references;
     }
 
-    public void setReferenceCollection(Collection<Reference> referenceCollection) {
-        this.referenceCollection = referenceCollection;
+    public void setReferences(Collection<Reference> references) {
+        this.references = references;
     }
 
     @Override

@@ -60,13 +60,13 @@ public class Reference implements Serializable {
     private Long displayOrder;
     @JoinColumn(name = "DOCUMENT_ID", referencedColumnName = "DOCUMENT_ID")
     @ManyToOne(optional = false)
-    private Document documentId;
+    private Document document;
     @JoinColumn(name = "PERSON_ID", referencedColumnName = "PERSON_ID")
     @ManyToOne
-    private Person personId;
+    private Person person;
     @JoinColumn(name = "WORKSPACE_ID", referencedColumnName = "WORKSPACE_ID")
     @ManyToOne
-    private Workspace workspaceId;
+    private Workspace workspace;
 
     public Reference() {
     }
@@ -129,28 +129,28 @@ public class Reference implements Serializable {
         this.displayOrder = displayOrder;
     }
 
-    public Document getDocumentId() {
-        return documentId;
+    public Document getDocument() {
+        return document;
     }
 
-    public void setDocumentId(Document documentId) {
-        this.documentId = documentId;
+    public void setDocument(Document document) {
+        this.document = document;
     }
 
-    public Person getPersonId() {
-        return personId;
+    public Person getPerson() {
+        return person;
     }
 
-    public void setPersonId(Person personId) {
-        this.personId = personId;
+    public void setPersonId(Person person) {
+        this.person = person;
     }
 
     public Workspace getWorkspaceId() {
-        return workspaceId;
+        return workspace;
     }
 
-    public void setWorkspaceId(Workspace workspaceId) {
-        this.workspaceId = workspaceId;
+    public void setWorkspace(Workspace workspace) {
+        this.workspace = workspace;
     }
 
     @Override

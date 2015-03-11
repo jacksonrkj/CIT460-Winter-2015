@@ -73,8 +73,8 @@ public class Document implements Serializable {
     @Size(min = 1, max = 38)
     @Column(name = "VERSION_NO")
     private String versionNo;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "documentId")
-    private Collection<Reference> referenceCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "document")
+    private Collection<Reference> references;
 
     public Document() {
     }
@@ -156,12 +156,12 @@ public class Document implements Serializable {
         this.versionNo = versionNo;
     }
 
-    public Collection<Reference> getReferenceCollection() {
-        return referenceCollection;
+    public Collection<Reference> getReferences() {
+        return references;
     }
 
-    public void setReferenceCollection(Collection<Reference> referenceCollection) {
-        this.referenceCollection = referenceCollection;
+    public void setReferences(Collection<Reference> references) {
+        this.references = references;
     }
 
     @Override

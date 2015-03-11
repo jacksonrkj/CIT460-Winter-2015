@@ -65,8 +65,8 @@ public class Address implements Serializable {
     @Size(min = 1, max = 9)
     @Column(name = "ZIPCODE")
     private String zipcode;
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "addressId")
-    private Collection<Person> personCollection;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "address")
+    private Collection<Person> persons;
 
     public Address() {
     }
@@ -131,12 +131,12 @@ public class Address implements Serializable {
         this.zipcode = zipcode;
     }
 
-    public Collection<Person> getPersonCollection() {
-        return personCollection;
+    public Collection<Person> getPersons() {
+        return persons;
     }
 
-    public void setPersonCollection(Collection<Person> personCollection) {
-        this.personCollection = personCollection;
+    public void setPersons(Collection<Person> persons) {
+        this.persons = persons;
     }
 
     @Override

@@ -56,7 +56,7 @@ public class Phone implements Serializable {
         @JoinColumn(name = "PHONE_ID", referencedColumnName = "PHONE_ID")}, inverseJoinColumns = {
         @JoinColumn(name = "PERSON_ID", referencedColumnName = "PERSON_ID")})
     @ManyToMany
-    private Collection<Person> personCollection;
+    private Collection<Person> persons;
 
     public Phone() {
     }
@@ -95,12 +95,12 @@ public class Phone implements Serializable {
         this.phoneNumber = phoneNumber;
     }
 
-    public Collection<Person> getPersonCollection() {
-        return personCollection;
+    public Collection<Person> getPersons() {
+        return persons;
     }
 
-    public void setPersonCollection(Collection<Person> personCollection) {
-        this.personCollection = personCollection;
+    public void setPersons(Collection<Person> persons) {
+        this.persons = persons;
     }
 
     @Override

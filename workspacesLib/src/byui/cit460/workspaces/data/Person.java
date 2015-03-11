@@ -86,15 +86,15 @@ public class Person implements Serializable {
     @Size(min = 1, max = 10)
     @Column(name = "PASSWORD")
     private String password;
-    @ManyToMany(mappedBy = "personCollection")
-    private Collection<Phone> phoneCollection;
+    @ManyToMany(mappedBy = "persons")
+    private Collection<Phone> phones;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "person")
-    private Collection<Membership> membershipCollection;
+    private Collection<Membership> memberships;
     @JoinColumn(name = "ADDRESS_ID", referencedColumnName = "ADDRESS_ID")
     @ManyToOne(optional = false)
-    private Address addressId;
-    @OneToMany(mappedBy = "personId")
-    private Collection<Reference> referenceCollection;
+    private Address address;
+    @OneToMany(mappedBy = "person")
+    private Collection<Reference> references;
 
     public Person() {
     }
@@ -186,36 +186,36 @@ public class Person implements Serializable {
         this.password = password;
     }
 
-    public Collection<Phone> getPhoneCollection() {
-        return phoneCollection;
+    public Collection<Phone> getPhones() {
+        return phones;
     }
 
-    public void setPhoneCollection(Collection<Phone> phoneCollection) {
-        this.phoneCollection = phoneCollection;
+    public void setPhones(Collection<Phone> phones) {
+        this.phones = phones;
     }
 
-    public Collection<Membership> getMembershipCollection() {
-        return membershipCollection;
+    public Collection<Membership> getMemberships() {
+        return memberships;
     }
 
-    public void setMembershipCollection(Collection<Membership> membershipCollection) {
-        this.membershipCollection = membershipCollection;
+    public void setMemberships(Collection<Membership> memberships) {
+        this.memberships = memberships;
     }
 
-    public Address getAddressId() {
-        return addressId;
+    public Address getAddress() {
+        return address;
     }
 
-    public void setAddressId(Address addressId) {
-        this.addressId = addressId;
+    public void setAddressId(Address address) {
+        this.address = address;
     }
 
-    public Collection<Reference> getReferenceCollection() {
-        return referenceCollection;
+    public Collection<Reference> getReferences() {
+        return references;
     }
 
-    public void setReferenceCollection(Collection<Reference> referenceCollection) {
-        this.referenceCollection = referenceCollection;
+    public void setReferences(Collection<Reference> references) {
+        this.references = references;
     }
 
     @Override
