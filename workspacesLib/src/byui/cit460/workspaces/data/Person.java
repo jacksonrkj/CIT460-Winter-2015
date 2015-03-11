@@ -68,8 +68,8 @@ public class Person implements Serializable {
     @Basic(optional = false)
     @Column(name = "PASSWORD")
     private String password;
-    @ManyToMany(mappedBy = "personCollection")
-    private Collection<Phone> phoneCollection;
+    @ManyToMany(mappedBy = "persons")
+    private Collection<Phone> phones;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "person")
     private Collection<Membership> memberships;
     @JoinColumn(name = "ADDRESS_ID", referencedColumnName = "ADDRESS_ID")
@@ -168,12 +168,12 @@ public class Person implements Serializable {
         this.password = password;
     }
 
-    public Collection<Phone> getPhoneCollection() {
-        return phoneCollection;
+    public Collection<Phone> getPhones() {
+        return phones;
     }
 
-    public void setPhoneCollection(Collection<Phone> phoneCollection) {
-        this.phoneCollection = phoneCollection;
+    public void setPhones(Collection<Phone> phones) {
+        this.phones = phones;
     }
 
     public Collection<Membership> getMemberships() {
