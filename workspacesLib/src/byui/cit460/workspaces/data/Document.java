@@ -21,8 +21,6 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 /**
  *
@@ -36,41 +34,29 @@ public class Document implements Serializable {
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
-    @SequenceGenerator(name="PERSON_DOCUMENTID_GENERATOR", sequenceName="SEQDOCUMENT")
-    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="PERSON_DOCUMENTID_GENERATOR")
+    @SequenceGenerator(name="DOCUMENT_DOCUMENTID_GENERATOR", sequenceName="SEQDOCUMENT")
+    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="DOCUMENT_DOCUMENTID_GENERATOR")
     @Basic(optional = false)
-    @NotNull
     @Column(name = "DOCUMENT_ID")
     private BigDecimal documentId;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 32)
     @Column(name = "DOCUMENT_NO")
     private String documentNo;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 4)
     @Column(name = "CONTEXT_TYPE")
     private String contextType;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 4)
     @Column(name = "DOC_TYPE")
     private String docType;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 200)
     @Column(name = "SHORT_DESCR")
     private String shortDescr;
     @Lob
     @Column(name = "DOC_TEXT")
     private String docText;
-    @Size(max = 2083)
     @Column(name = "DOC_URL")
     private String docUrl;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 38)
     @Column(name = "VERSION_NO")
     private String versionNo;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "document")
@@ -156,11 +142,11 @@ public class Document implements Serializable {
         this.versionNo = versionNo;
     }
 
-    public Collection<Reference> getReferences() {
+    public Collection<Reference> getReferenceCollection() {
         return references;
     }
 
-    public void setReferences(Collection<Reference> references) {
+    public void setReferenceCollection(Collection<Reference> references) {
         this.references = references;
     }
 

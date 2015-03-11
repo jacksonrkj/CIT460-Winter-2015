@@ -16,8 +16,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 /**
  *
@@ -32,12 +30,9 @@ public class Membership implements Serializable {
     @EmbeddedId
     protected MembershipPK membershipPK;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "PERMISSION")
     private short permission;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 4)
     @Column(name = "ROLE_TYPE")
     private String roleType;
     @JoinColumn(name = "PERSON_ID", referencedColumnName = "PERSON_ID", insertable = false, updatable = false)

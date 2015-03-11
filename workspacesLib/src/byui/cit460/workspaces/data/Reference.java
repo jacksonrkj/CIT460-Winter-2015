@@ -22,7 +22,6 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.NotNull;
 
 /**
  *
@@ -36,18 +35,15 @@ public class Reference implements Serializable {
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
-    @SequenceGenerator(name="PERSON_REFERENCEID_GENERATOR", sequenceName="SEQREFERENCE")
-    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="PERSON_REFERENCEID_GENERATOR")
+    @SequenceGenerator(name="REFERENCE_REFERENCEID_GENERATOR", sequenceName="SEQREFERENCE")
+    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="REFERENCE_REFERENCEID_GENERATOR")
     @Basic(optional = false)
-    @NotNull
     @Column(name = "REFERENCE_ID")
     private BigDecimal referenceId;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "PERMISSION")
     private short permission;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "STARTTIME")
     @Temporal(TemporalType.TIMESTAMP)
     private Date starttime;
@@ -141,11 +137,11 @@ public class Reference implements Serializable {
         return person;
     }
 
-    public void setPersonId(Person person) {
+    public void setPerson(Person person) {
         this.person = person;
     }
 
-    public Workspace getWorkspaceId() {
+    public Workspace getWorkspace() {
         return workspace;
     }
 

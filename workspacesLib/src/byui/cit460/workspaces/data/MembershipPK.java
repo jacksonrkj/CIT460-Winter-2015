@@ -10,7 +10,6 @@ import java.math.BigInteger;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Embeddable;
-import javax.validation.constraints.NotNull;
 
 /**
  *
@@ -19,11 +18,9 @@ import javax.validation.constraints.NotNull;
 @Embeddable
 public class MembershipPK implements Serializable {
     @Basic(optional = false)
-    @NotNull
     @Column(name = "PERSON_ID")
     private BigInteger personId;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "WORKSPACE_ID")
     private BigInteger workspaceId;
 

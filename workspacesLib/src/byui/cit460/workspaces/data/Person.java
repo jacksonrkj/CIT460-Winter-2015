@@ -26,8 +26,6 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 /**
  *
@@ -44,50 +42,34 @@ public class Person implements Serializable {
     @SequenceGenerator(name="PERSON_PERSONID_GENERATOR", sequenceName="SEQPERSON")
     @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="PERSON_PERSONID_GENERATOR")
     @Basic(optional = false)
-    @NotNull
     @Column(name = "PERSON_ID")
     private BigDecimal personId;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 15)
     @Column(name = "FIRST_NAME")
     private String firstName;
-    @Size(max = 1)
     @Column(name = "MIDDLE_INITIAL")
     private String middleInitial;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 15)
     @Column(name = "LAST_NAME")
     private String lastName;
     @Basic(optional = false)
-    @NotNull
     @Column(name = "BIRTH_DATE")
     @Temporal(TemporalType.TIMESTAMP)
     private Date birthDate;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 1)
     @Column(name = "GENDER")
     private String gender;
-    // @Pattern(regexp="[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?", message="Invalid email")//if the field contains email address consider using this annotation to enforce field validation
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 100)
     @Column(name = "EMAIL")
     private String email;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 45)
     @Column(name = "USER_NAME")
     private String userName;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 10)
     @Column(name = "PASSWORD")
     private String password;
-    @ManyToMany(mappedBy = "persons")
-    private Collection<Phone> phones;
+    @ManyToMany(mappedBy = "personCollection")
+    private Collection<Phone> phoneCollection;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "person")
     private Collection<Membership> memberships;
     @JoinColumn(name = "ADDRESS_ID", referencedColumnName = "ADDRESS_ID")
@@ -186,12 +168,12 @@ public class Person implements Serializable {
         this.password = password;
     }
 
-    public Collection<Phone> getPhones() {
-        return phones;
+    public Collection<Phone> getPhoneCollection() {
+        return phoneCollection;
     }
 
-    public void setPhones(Collection<Phone> phones) {
-        this.phones = phones;
+    public void setPhoneCollection(Collection<Phone> phoneCollection) {
+        this.phoneCollection = phoneCollection;
     }
 
     public Collection<Membership> getMemberships() {
@@ -206,7 +188,7 @@ public class Person implements Serializable {
         return address;
     }
 
-    public void setAddressId(Address address) {
+    public void setAddress(Address address) {
         this.address = address;
     }
 

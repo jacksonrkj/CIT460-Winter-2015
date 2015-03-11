@@ -21,8 +21,6 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 /**
  *
@@ -36,24 +34,20 @@ public class Workspace implements Serializable {
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
-    @SequenceGenerator(name="PERSON_WORKSPACEID_GENERATOR", sequenceName="SEQWORKSPACE")
-    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="PERSON_WORKSPACEID_GENERATOR")
+    @SequenceGenerator(name="WORKSPACE_WORKSPACEID_GENERATOR", sequenceName="SEQWORKSPACE")
+    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="WORKSPACE_WORKSPACEID_GENERATOR")
     @Basic(optional = false)
-    @NotNull
     @Column(name = "WORKSPACE_ID")
     private BigDecimal workspaceId;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 4)
     @Column(name = "GROUP_TYPE")
     private String groupType;
-    @Size(max = 254)
     @Column(name = "DESCRIPTION")
     private String description;
     @Column(name = "MAX_SIZE")
     private BigInteger maxSize;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "workspace")
-    private Collection<Membership> memberships;
+    private Collection<Membership> membershipCollection;
     @OneToMany(mappedBy = "workspace")
     private Collection<Reference> references;
 
@@ -101,12 +95,12 @@ public class Workspace implements Serializable {
         this.maxSize = maxSize;
     }
 
-    public Collection<Membership> getMemberships() {
-        return memberships;
+    public Collection<Membership> getMembershipCollection() {
+        return membershipCollection;
     }
 
-    public void setMemberships(Collection<Membership> memberships) {
-        this.memberships = memberships;
+    public void setMembershipCollection(Collection<Membership> membershipCollection) {
+        this.membershipCollection = membershipCollection;
     }
 
     public Collection<Reference> getReferences() {

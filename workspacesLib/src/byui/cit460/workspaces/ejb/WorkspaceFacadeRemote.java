@@ -6,7 +6,6 @@
 package byui.cit460.workspaces.ejb;
 
 import byui.cit460.workspaces.data.Workspace;
-import java.math.BigDecimal;
 import java.util.List;
 import javax.ejb.Remote;
 

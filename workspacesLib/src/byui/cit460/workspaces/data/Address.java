@@ -20,8 +20,6 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 /**
  *
@@ -34,35 +32,24 @@ import javax.validation.constraints.Size;
 public class Address implements Serializable {
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
-    
     @Id
-    @SequenceGenerator(name="PERSON_ADDRESSID_GENERATOR", sequenceName="SEQADDRESS")
-    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="PERSON_ADDRESSID_GENERATOR")
+    @SequenceGenerator(name="ADDRESS_ADDRESSID_GENERATOR", sequenceName="SEQADDRESS")
+    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="ADDRESS_ADDRESSID_GENERATOR")
     @Basic(optional = false)
-    @NotNull
     @Column(name = "ADDRESS_ID")
     private BigDecimal addressId;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 30)
     @Column(name = "ADDRESS1")
     private String address1;
-    @Size(max = 30)
     @Column(name = "ADDRESS2")
     private String address2;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 20)
     @Column(name = "CITY_ADDRESS")
     private String cityAddress;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 2)
     @Column(name = "STATE_ADDRESS")
     private String stateAddress;
     @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 9)
     @Column(name = "ZIPCODE")
     private String zipcode;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "address")
@@ -131,11 +118,11 @@ public class Address implements Serializable {
         this.zipcode = zipcode;
     }
 
-    public Collection<Person> getPersons() {
+    public Collection<Person> getPersonCollection() {
         return persons;
     }
 
-    public void setPersons(Collection<Person> persons) {
+    public void setPersons(Collection<Person> personCollection) {
         this.persons = persons;
     }
 
