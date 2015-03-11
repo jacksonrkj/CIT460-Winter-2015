@@ -31,6 +31,6 @@ public interface PersonFacadeRemote {
 
     int count();
 
-    public String login(String username, String password) throws WorkspacesException;
+    public String authenticate (String username, String password) throws WorkspacesException;
     
 }

@@ -30,9 +30,5 @@ public interface WorkspaceFacadeRemote {
     List<Workspace> findRange(int[] range);
 
     int count();
-
-    public String getWorkSpaceDocuments(BigDecimal workspaceId);
-
-    public String getPortalDocuments(BigDecimal personId);
     
 }
