@@ -15,7 +15,7 @@ import javax.persistence.PersistenceContext;
  * @author jacksonrkj
  */
 @Stateless
-public class DocumentFacade extends AbstractFacade<Document> implements byui.cit460.workspaces.ejb.DocumentFacadeRemote {
+public class DocumentFacade extends AbstractFacade<Document> implements DocumentFacadeRemote {
     @PersistenceContext(unitName = "WorkSpacesEJBPU")
     private EntityManager em;
 

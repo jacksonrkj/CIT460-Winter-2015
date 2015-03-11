@@ -15,7 +15,7 @@ import javax.persistence.PersistenceContext;
  * @author jacksonrkj
  */
 @Stateless
-public class MembershipFacade extends AbstractFacade<Membership> implements byui.cit460.workspaces.ejb.MembershipFacadeRemote {
+public class MembershipFacade extends AbstractFacade<Membership> implements MembershipFacadeRemote {
     @PersistenceContext(unitName = "WorkSpacesEJBPU")
     private EntityManager em;
 

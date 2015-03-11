@@ -15,7 +15,7 @@ import javax.persistence.PersistenceContext;
  * @author jacksonrkj
  */
 @Stateless
-public class LookupFacade extends AbstractFacade<Lookup> implements byui.cit460.workspaces.ejb.LookupFacadeRemote {
+public class LookupFacade extends AbstractFacade<Lookup> implements LookupFacadeRemote {
     @PersistenceContext(unitName = "WorkSpacesEJBPU")
     private EntityManager em;
 

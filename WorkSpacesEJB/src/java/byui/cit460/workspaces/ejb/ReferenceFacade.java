@@ -15,7 +15,7 @@ import javax.persistence.PersistenceContext;
  * @author jacksonrkj
  */
 @Stateless
-public class ReferenceFacade extends AbstractFacade<Reference> implements byui.cit460.workspaces.ejb.ReferenceFacadeRemote {
+public class ReferenceFacade extends AbstractFacade<Reference> implements ReferenceFacadeRemote {
     @PersistenceContext(unitName = "WorkSpacesEJBPU")
     private EntityManager em;
 
