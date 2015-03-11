@@ -17,10 +17,12 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  *
- * @author Ryan
+ * @author jacksonrkj
  */
 @Entity
 @Table(name = "LOOKUP")
@@ -30,23 +32,33 @@ public class Lookup implements Serializable {
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
-    @SequenceGenerator(name="LOOKUP_LOOKUPID_GENERATOR", sequenceName="SEQLOOKUP")
-    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="LOOKUP_LOOKUPID_GENERATOR")
+    @SequenceGenerator(name="PERSON_LOOKUPID_GENERATOR", sequenceName="SEQLOOKUP")
+    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="PERSON_LOOKUPID_GENERATOR")
     @Basic(optional = false)
+    @NotNull
     @Column(name = "LOOKUP_ID")
     private BigDecimal lookupId;
     @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 30)
     @Column(name = "TABLE_NAME")
     private String tableName;
     @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 30)
     @Column(name = "COLUMN_NAME")
     private String columnName;
     @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 30)
     @Column(name = "LOOKUP_TYPE")
     private String lookupType;
     @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 30)
     @Column(name = "LOOKUP_VALUE")
     private String lookupValue;
+    @Size(max = 4)
     @Column(name = "LOOKUP_CODE")
     private String lookupCode;
 

@@ -22,10 +22,11 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.NotNull;
 
 /**
  *
- * @author Ryan
+ * @author jacksonrkj
  */
 @Entity
 @Table(name = "REFERENCE")
@@ -35,15 +36,18 @@ public class Reference implements Serializable {
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
-    @SequenceGenerator(name="REFRENCE_REFRENCEID_GENERATOR", sequenceName="SEQREFRENCE")
-    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="REFRENCE_REFRENCEID_GENERATOR")
+    @SequenceGenerator(name="PERSON_REFERENCEID_GENERATOR", sequenceName="SEQREFERENCE")
+    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="PERSON_REFERENCEID_GENERATOR")
     @Basic(optional = false)
+    @NotNull
     @Column(name = "REFERENCE_ID")
     private BigDecimal referenceId;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "PERMISSION")
     private short permission;
     @Basic(optional = false)
+    @NotNull
     @Column(name = "STARTTIME")
     @Temporal(TemporalType.TIMESTAMP)
     private Date starttime;
@@ -55,13 +59,13 @@ public class Reference implements Serializable {
     @Column(name = "DISPLAY_ORDER")
     private Long displayOrder;
     @JoinColumn(name = "DOCUMENT_ID", referencedColumnName = "DOCUMENT_ID")
-    @ManyToOne
+    @ManyToOne(optional = false)
     private Document documentId;
     @JoinColumn(name = "PERSON_ID", referencedColumnName = "PERSON_ID")
     @ManyToOne
     private Person personId;
     @JoinColumn(name = "WORKSPACE_ID", referencedColumnName = "WORKSPACE_ID")
-    @ManyToOne(optional = false)
+    @ManyToOne
     private Workspace workspaceId;
 
     public Reference() {

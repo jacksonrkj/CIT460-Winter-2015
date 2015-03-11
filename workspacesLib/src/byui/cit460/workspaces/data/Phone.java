@@ -21,10 +21,12 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  *
- * @author Ryan
+ * @author jacksonrkj
  */
 @Entity
 @Table(name = "PHONE")
@@ -34,15 +36,20 @@ public class Phone implements Serializable {
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
-    @SequenceGenerator(name="PHONE_PHONEID_GENERATOR", sequenceName="SEQPHONE")
-    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="PHONE_PHONEID_GENERATOR")
+    @SequenceGenerator(name="PERSON_PHONEID_GENERATOR", sequenceName="SEQPHONE")
+    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="PERSON_PHONEID_GENERATOR")
     @Basic(optional = false)
+    @NotNull
     @Column(name = "PHONE_ID")
     private BigDecimal phoneId;
     @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 4)
     @Column(name = "PHONE_TYPE")
     private String phoneType;
     @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 13)
     @Column(name = "PHONE_NUMBER")
     private String phoneNumber;
     @JoinTable(name = "PERSON_PHONE", joinColumns = {

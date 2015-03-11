@@ -9,6 +9,7 @@ import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Collection;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -20,10 +21,12 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  *
- * @author Ryan
+ * @author jacksonrkj
  */
 @Entity
 @Table(name = "DOCUMENT")
@@ -33,34 +36,44 @@ public class Document implements Serializable {
     private static final long serialVersionUID = 1L;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
     @Id
-    @SequenceGenerator(name="DOC_DOCID_GENERATOR", sequenceName="SEQDOCUMENT")
-    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="DOC_DOCID_GENERATOR")
+    @SequenceGenerator(name="PERSON_DOCUMENTID_GENERATOR", sequenceName="SEQDOCUMENT")
+    @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="PERSON_DOCUMENTID_GENERATOR")
     @Basic(optional = false)
+    @NotNull
     @Column(name = "DOCUMENT_ID")
     private BigDecimal documentId;
-    
     @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 32)
     @Column(name = "DOCUMENT_NO")
     private String documentNo;
-    
     @Basic(optional = false)
-    @Column(name = "DOC_TYPE")
-    private String docType;
-    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 4)
     @Column(name = "CONTEXT_TYPE")
     private String contextType;
     @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 4)
+    @Column(name = "DOC_TYPE")
+    private String docType;
+    @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 200)
     @Column(name = "SHORT_DESCR")
     private String shortDescr;
     @Lob
     @Column(name = "DOC_TEXT")
     private String docText;
+    @Size(max = 2083)
     @Column(name = "DOC_URL")
     private String docUrl;
     @Basic(optional = false)
+    @NotNull
+    @Size(min = 1, max = 38)
     @Column(name = "VERSION_NO")
     private String versionNo;
-    @OneToMany(mappedBy = "documentId")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "documentId")
     private Collection<Reference> referenceCollection;
 
     public Document() {
@@ -70,10 +83,11 @@ public class Document implements Serializable {
         this.documentId = documentId;
     }
 
-    public Document(BigDecimal documentId, String docType, String contextType, String shortDescr, String versionNo) {
+    public Document(BigDecimal documentId, String documentNo, String contextType, String docType, String shortDescr, String versionNo) {
         this.documentId = documentId;
-        this.docType = docType;
+        this.documentNo = documentNo;
         this.contextType = contextType;
+        this.docType = docType;
         this.shortDescr = shortDescr;
         this.versionNo = versionNo;
     }
@@ -94,7 +108,13 @@ public class Document implements Serializable {
         this.documentNo = documentNo;
     }
 
-    
+    public String getContextType() {
+        return contextType;
+    }
+
+    public void setContextType(String contextType) {
+        this.contextType = contextType;
+    }
 
     public String getDocType() {
         return docType;
@@ -102,14 +122,6 @@ public class Document implements Serializable {
 
     public void setDocType(String docType) {
         this.docType = docType;
-    }
-
-    public String getContextType() {
-        return contextType;
-    }
-
-    public void setContextType(String contextType) {
-        this.contextType = contextType;
     }
 
     public String getShortDescr() {
@@ -176,7 +188,5 @@ public class Document implements Serializable {
     public String toString() {
         return "byui.cit460.workspaces.data.Document[ documentId=" + documentId + " ]";
     }
-    
-    
     
 }
