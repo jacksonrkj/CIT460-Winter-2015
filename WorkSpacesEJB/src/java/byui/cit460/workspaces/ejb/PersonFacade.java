@@ -6,8 +6,11 @@
 package byui.cit460.workspaces.ejb;
 
 
+import byui.cit460.workspaces.data.Document;
 import byui.cit460.workspaces.data.Person;
+import byui.cit460.workspaces.data.Workspace;
 import byui.cit460.workspaces.exceptions.WorkspacesException;
+import java.util.Collection;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -45,6 +48,8 @@ public class PersonFacade extends AbstractFacade<Person> implements PersonFacade
    
         Person person = null;
         String portalDocuments = "";
+        Collection<Document> workspaces;
+        Collection<Document> gradesEvents;
 
         if (username == null || password == null) {
             throw new WorkspacesException("Invalid username and/or password");
@@ -67,7 +72,42 @@ public class PersonFacade extends AbstractFacade<Person> implements PersonFacade
         }
         
         // get all portal documents
- 
+        
+        // Get the Persons Workspace 
+        Query queryWorkspace = em.createQuery("SELECT r.document FROM Workspace AS w "
+                + "INNER JOIN w.membershipCollection as m "
+                + "INNER JOIN w.references as r "
+                + "WHERE m.membershipPK.personId = :personid "
+                + "AND w.groupType = 'CTIG'");
+        
+       queryWorkspace.setParameter("personid", person.getPersonId()); 
+       
+       
+       
+       try{
+           workspaces = (Collection<Document>) queryWorkspace.getResultList();
+        }
+        catch (Exception e) { // catch all other exceptions and throw custom exception
+            throw new WorkspacesException(e.getMessage());
+        }
+       
+       Query grades = em.createQuery("SELECT r.document FROM Membership AS m "
+               + "INNER JOIN m.workspace AS w "
+               + "INNER JOIN w.references AS r "
+               + "WHERE m.membershipPK.personId = :personId "
+               + "AND r.document.contextType  IN ('CTFG', 'CTEV') "
+               + "ORDER BY r.document.contextType");
+       
+       grades.setParameter("personId", person.getPersonId());
+       
+       try{
+           gradesEvents = (Collection<Document>) grades.getResultList();
+       }
+       catch (Exception e) { // catch all other exceptions and throw custom exception
+            throw new WorkspacesException(e.getMessage());
+        }
+              
+         
         return portalDocuments;
     }
 }
