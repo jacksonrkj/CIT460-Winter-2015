@@ -78,7 +78,7 @@ public class PersonFacade extends AbstractFacade<Person> implements PersonFacade
                 + "INNER JOIN w.membershipCollection as m "
                 + "INNER JOIN w.references as r "
                 + "WHERE m.membershipPK.personId = :personid "
-                + "AND w.groupType = 'CTIG'");
+                + "AND w.workspaceType = 'CTIG'");
         
        queryWorkspace.setParameter("personid", person.getPersonId()); 
        
