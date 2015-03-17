@@ -40,8 +40,8 @@ public class Workspace implements Serializable {
     @Column(name = "WORKSPACE_ID")
     private BigDecimal workspaceId;
     @Basic(optional = false)
-    @Column(name = "GROUP_TYPE")
-    private String groupType;
+    @Column(name = "WORKSPACE_TYPE")
+    private String workspaceType;
     @Column(name = "DESCRIPTION")
     private String description;
     @Column(name = "MAX_SIZE")
@@ -60,7 +60,7 @@ public class Workspace implements Serializable {
 
     public Workspace(BigDecimal workspaceId, String groupType) {
         this.workspaceId = workspaceId;
-        this.groupType = groupType;
+        this.workspaceType = groupType;
     }
 
     public BigDecimal getWorkspaceId() {
@@ -71,12 +71,12 @@ public class Workspace implements Serializable {
         this.workspaceId = workspaceId;
     }
 
-    public String getGroupType() {
-        return groupType;
+    public String getWorkspaceType() {
+        return workspaceType;
     }
 
-    public void setGroupType(String groupType) {
-        this.groupType = groupType;
+    public void setWorkspaceType(String workspaceType) {
+        this.workspaceType = workspaceType;
     }
 
     public String getDescription() {
