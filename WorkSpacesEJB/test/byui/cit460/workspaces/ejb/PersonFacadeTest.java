@@ -5,13 +5,10 @@
  */
 package byui.cit460.workspaces.ejb;
 
-import byui.cit460.workspaces.data.Person;
-import java.util.List;
 import javax.ejb.embeddable.EJBContainer;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 /**
  *

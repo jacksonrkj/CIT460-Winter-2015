@@ -7,13 +7,13 @@ package byui.cit460.workspaces.ejb;
 
 
 import byui.cit460.workspaces.data.DocItem;
-import byui.cit460.workspaces.data.Document;
 import byui.cit460.workspaces.data.Person;
-import byui.cit460.workspaces.data.Workspace;
 import byui.cit460.workspaces.exceptions.WorkspacesException;
 import com.google.gson.Gson;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -111,73 +111,69 @@ public class PersonFacade extends AbstractFacade<Person> implements PersonFacade
             throw new WorkspacesException(e.getMessage());
         }
        
-       PortalInfo portalDocs = new PortalInfo(); 
-       portalDocs.setUser(person);
-       ArrayList<DocItem> sections = new ArrayList<>(); 
-       ArrayList<DocItem> userGrades = new ArrayList<>(); 
-       ArrayList<DocItem> events = new ArrayList<>(); 
-        for (Object workspaceObj : workspaces) {
-            String[] workspace = (String[]) workspaceObj;
-            sections.add(new DocItem(workspace[0], workspace[2]));
+        PortalInfo portalDocs = new PortalInfo();
+        portalDocs.setPersonId(person.getPersonId());
+        
+        ArrayList<DocItem> sections = new ArrayList<>(); 
+        ArrayList<DocItem> userGrades = new ArrayList<>(); 
+        ArrayList<DocItem> events = new ArrayList<>();
+       
+        for (Object obj : workspaces) {
+            Object[] objValues = (Object[]) obj;
+            sections.add(new DocItem((String) objValues[0], (String) objValues[2]));
         }
         
-        for(Object gradeEventObj: gradesEvents){
-            String[] gradeEvent = (String[]) gradeEventObj;
-            if(gradeEvent[1].equals("CTFG")){
-                userGrades.add(new DocItem(gradeEvent[0], gradeEvent[1]));
+        for(Object obj: gradesEvents){
+            Object[] objValues = (Object[]) obj;
+            String contextType = (String) objValues[1];
+            if(contextType.equals("CTFG")){
+                userGrades.add(new DocItem((String)objValues[0], (String)objValues[1]));
             }
             else
-                events.add(new DocItem(gradeEvent[0], gradeEvent[1]));
+                events.add(new DocItem((String)objValues[0], (String)objValues[1]));
         }
        
-       portalDocs.setSections(sections);
-       portalDocs.setEvents(events);
-       portalDocs.setGrades(userGrades);
-       Gson json = new Gson(); 
-       portalDocuments = json.toJson(portalDocs);
+       portalDocs.getDocuments().put("sections", sections);
+       portalDocs.getDocuments().put("events", events);
+       portalDocs.getDocuments().put("grades", userGrades);
+       
+       portalDocuments = portalDocs.toJson();
        
         return portalDocuments;
     }
     
     class PortalInfo{
-        Person user; 
-        ArrayList<DocItem> sections; 
-        ArrayList<DocItem> grades; 
-        ArrayList<DocItem> events; 
+
+        private BigDecimal personId; 
+        private HashMap<String, ArrayList<DocItem>> documents = new HashMap<>();     
 
         public PortalInfo() {
         }
 
-        public Person getUser() {
-            return user;
+        public BigDecimal getPersonId() {
+            return personId;
         }
 
-        public void setUser(Person user) {
-            this.user = user;
+        public void setPersonId(BigDecimal personId) {
+            this.personId = personId;
         }
 
-        public ArrayList<DocItem> getSections() {
-            return sections;
+
+        
+
+        public HashMap<String, ArrayList<DocItem>> getDocuments() {
+            return documents;
         }
 
-        public void setSections(ArrayList<DocItem> sections) {
-            this.sections = sections;
+        public void setDocuments(HashMap<String, ArrayList<DocItem>> documents) {
+            this.documents = documents;
         }
 
-        public ArrayList<DocItem> getGrades() {
-            return grades;
-        }
-
-        public void setGrades(ArrayList<DocItem> grades) {
-            this.grades = grades;
-        }
-
-        public ArrayList<DocItem> getEvents() {
-            return events;
-        }
-
-        public void setEvents(ArrayList<DocItem> events) {
-            this.events = events;
+        
+        public String toJson() {
+            Gson gson = new Gson();
+            String jsonString = gson.toJson(this);
+            return jsonString;
         }
         
     }
