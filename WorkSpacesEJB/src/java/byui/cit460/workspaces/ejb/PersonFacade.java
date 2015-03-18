@@ -51,8 +51,8 @@ public class PersonFacade extends AbstractFacade<Person> implements PersonFacade
    
         Person person = null;
         String portalDocuments = "";
-        Collection<Object[]> workspaces;
-        Collection<Object[]> gradesEvents;
+        Collection<Object> workspaces;
+        Collection<Object> gradesEvents;
 
         if (username == null || password == null) {
             throw new WorkspacesException("Invalid username and/or password");
@@ -89,7 +89,7 @@ public class PersonFacade extends AbstractFacade<Person> implements PersonFacade
        
        
        try{
-           workspaces = (Collection<Object[]>) queryWorkspace.getResultList();
+           workspaces = (Collection<Object>) queryWorkspace.getResultList();
         }
         catch (Exception e) { // catch all other exceptions and throw custom exception
             throw new WorkspacesException(e.getMessage());
@@ -105,7 +105,7 @@ public class PersonFacade extends AbstractFacade<Person> implements PersonFacade
        grades.setParameter("personId", person.getPersonId());
        
        try{
-           gradesEvents = (Collection<Object[]>) grades.getResultList();
+           gradesEvents = (Collection<Object>) grades.getResultList();
        }
        catch (Exception e) { // catch all other exceptions and throw custom exception
             throw new WorkspacesException(e.getMessage());
@@ -116,12 +116,12 @@ public class PersonFacade extends AbstractFacade<Person> implements PersonFacade
        ArrayList<DocItem> sections = new ArrayList<>(); 
        ArrayList<DocItem> userGrades = new ArrayList<>(); 
        ArrayList<DocItem> events = new ArrayList<>(); 
-        for (Object[] workspaceObj : workspaces) {
+        for (Object workspaceObj : workspaces) {
             String[] workspace = (String[]) workspaceObj;
             sections.add(new DocItem(workspace[0], workspace[2]));
         }
         
-        for(Object[] gradeEventObj: gradesEvents){
+        for(Object gradeEventObj: gradesEvents){
             String[] gradeEvent = (String[]) gradeEventObj;
             if(gradeEvent[1].equals("CTFG")){
                 userGrades.add(new DocItem(gradeEvent[0], gradeEvent[1]));
