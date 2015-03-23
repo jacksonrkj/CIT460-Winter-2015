@@ -127,15 +127,15 @@ public class PersonFacade extends AbstractFacade<Person> implements PersonFacade
             Object[] objValues = (Object[]) obj;
             String contextType = (String) objValues[1];
             if(contextType.equals("CTFG")){
-                userGrades.add(new DocItem((String)objValues[0], (String)objValues[1]));
+                userGrades.add(new DocItem((String)objValues[0], (String)objValues[2]));
             }
             else
-                events.add(new DocItem((String)objValues[0], (String)objValues[1]));
+                events.add(new DocItem((String)objValues[0], (String)objValues[2]));
         }
-       
-       portalDocs.getDocuments().put("sections", sections);
-       portalDocs.getDocuments().put("events", events);
+         
        portalDocs.getDocuments().put("grades", userGrades);
+       portalDocs.getDocuments().put("events", events);
+       portalDocs.getDocuments().put("sections", sections);
        
        portalDocuments = portalDocs.toJson();
        
