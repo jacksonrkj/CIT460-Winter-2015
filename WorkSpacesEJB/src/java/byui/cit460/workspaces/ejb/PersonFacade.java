@@ -9,16 +9,20 @@ package byui.cit460.workspaces.ejb;
 import byui.cit460.workspaces.data.DocItem;
 import byui.cit460.workspaces.data.Person;
 import byui.cit460.workspaces.exceptions.WorkspacesException;
-import com.google.gson.Gson;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import org.quickconnect.json.JSONException;
+import org.quickconnect.json.JSONUtilities;
 
 /**
  *
@@ -137,12 +141,16 @@ public class PersonFacade extends AbstractFacade<Person> implements PersonFacade
        portalDocs.getDocuments().put("events", events);
        portalDocs.getDocuments().put("sections", sections);
        
-       portalDocuments = portalDocs.toJson();
+        try {
+            portalDocuments = portalDocs.toJson();
+        } catch (JSONException ex) {
+            throw new WorkspacesException(ex.getMessage());
+        }
        
         return portalDocuments;
     }
     
-    class PortalInfo{
+    class PortalInfo implements Serializable {
 
         private BigDecimal personId; 
         private HashMap<String, ArrayList<DocItem>> documents = new HashMap<>();     
@@ -170,9 +178,9 @@ public class PersonFacade extends AbstractFacade<Person> implements PersonFacade
         }
 
         
-        public String toJson() {
-            Gson gson = new Gson();
-            String jsonString = gson.toJson(this);
+        public String toJson() throws JSONException {
+            JSONUtilities jsonUtiltities = new JSONUtilities();
+            String jsonString = jsonUtiltities.stringify(this);
             return jsonString;
         }
         

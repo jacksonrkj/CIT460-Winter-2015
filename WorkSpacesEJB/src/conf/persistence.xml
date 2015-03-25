@@ -2,7 +2,15 @@
 <persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
   <persistence-unit name="WorkSpacesEJBPU" transaction-type="JTA">
     <jta-data-source>cit460</jta-data-source>
-    <exclude-unlisted-classes>false</exclude-unlisted-classes>
+    <class>byui.cit460.workspaces.data.Address</class>
+    <class>byui.cit460.workspaces.data.Document</class>
+    <class>byui.cit460.workspaces.data.Lookup</class>
+    <class>byui.cit460.workspaces.data.Membership</class>
+    <class>byui.cit460.workspaces.data.Person</class>
+    <class>byui.cit460.workspaces.data.Phone</class>
+    <class>byui.cit460.workspaces.data.Reference</class>
+    <class>byui.cit460.workspaces.data.Workspace</class>
+    <exclude-unlisted-classes>true</exclude-unlisted-classes>
     <properties/>
   </persistence-unit>
 </persistence>

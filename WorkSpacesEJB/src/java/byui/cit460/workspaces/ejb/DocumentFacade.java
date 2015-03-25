@@ -9,19 +9,18 @@ import byui.cit460.workspaces.data.Document;
 import byui.cit460.workspaces.data.Workspace;
 import byui.cit460.workspaces.data.Person;
 import byui.cit460.workspaces.exceptions.WorkspacesException;
-import com.google.gson.Gson;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import javax.ejb.Stateless;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import java.util.Collection;
 import java.util.HashMap;
-
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import org.quickconnect.json.JSONException;
+import org.quickconnect.json.JSONUtilities;
 /**
  *
  * @author jacksonrkj
@@ -67,10 +66,17 @@ public class DocumentFacade extends AbstractFacade<Document> implements Document
         PortalInfo portalInfo = new PortalInfo();
         portalInfo.setPersonId(user.getPersonId());
         portalInfo.getDocuments().put(workspace.getDescription(), assignments);
+        String json;
+        try {
+            json = portalInfo.toJson();
+        } catch (JSONException ex) {
+            throw new WorkspacesException(ex.getMessage());
+        }
         
-        return portalInfo.toJson();
+        return json;
+        
     }
-        class PortalInfo{
+        class PortalInfo implements Serializable {
 
         private BigDecimal personId; 
         private HashMap<String, ArrayList<Object>> documents = new HashMap<>();     
@@ -98,11 +104,12 @@ public class DocumentFacade extends AbstractFacade<Document> implements Document
         }
 
         
-        public String toJson() {
-            Gson gson = new Gson();
-            String jsonString = gson.toJson(this);
+        public String toJson() throws JSONException {
+            JSONUtilities jsonUtiltities = new JSONUtilities();
+            String jsonString = jsonUtiltities.stringify(this);
             return jsonString;
         }
+        
         
     }
 }
