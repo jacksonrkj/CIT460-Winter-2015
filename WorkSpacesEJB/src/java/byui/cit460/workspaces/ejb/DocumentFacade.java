@@ -6,27 +6,19 @@
 package byui.cit460.workspaces.ejb;
 
 import byui.cit460.workspaces.data.Document;
-import byui.cit460.workspaces.data.Workspace;
-import byui.cit460.workspaces.data.Person;
-import byui.cit460.workspaces.exceptions.WorkspacesException;
-import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.ArrayList;
+import java.util.Collection;
 import javax.ejb.Stateless;
-import java.util.HashMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import org.quickconnect.json.JSONException;
-import org.quickconnect.json.JSONUtilities;
+
 /**
  *
  * @author jacksonrkj
  */
 @Stateless
-public class DocumentFacade extends AbstractFacade<Document> implements DocumentFacadeRemote {
+public class DocumentFacade extends AbstractFacade<Document> implements byui.cit460.workspaces.ejb.DocumentFacadeRemote {
     @PersistenceContext(unitName = "WorkSpacesEJBPU")
     private EntityManager em;
 
@@ -38,78 +30,112 @@ public class DocumentFacade extends AbstractFacade<Document> implements Document
     public DocumentFacade() {
         super(Document.class);
     }
- 
-    public String retrieveAssignments(Person user, Workspace workspace) throws WorkspacesException {
-        
-        if (workspace == null) {
-            throw new WorkspacesException("Invalid section");
+    
+    
+      /**
+     * Get all documents defined for the specified workspace
+     *
+     * @param workspaceId
+     * @return A JSON string containing document descriptions for all
+ documents found.
+     */
+    @Override
+    public Collection<Object> getAllWorkSpaceDocuments(BigDecimal personId, BigDecimal workspaceId) {
+        if (workspaceId == null) {
+            throw new IllegalArgumentException("getWorkSpaceDocuments - personId or workspaceId is null");
         }
-        
-        ArrayList<Object> assignments;
-        
-        Query queryAssignments = em.createQuery("SELECT document_id, document_no, short_descr, doc_text, doc_url, version_no FROM Document AS d"
-                + "INNER JOIN d.references as r"
-                + "INNER JOIN r.workspace as w"
-                + "WHERE w.workspace_id = :workspaceId "
-                + "AND d.context_type = 'CTAS' "
-                + "ORDER BY r.displayOrder");
-        
-        queryAssignments.setParameter("workspaceId", workspace.getWorkspaceId());
-        
-        try{
-           assignments = (ArrayList<Object>) queryAssignments.getResultList();
-        }
-        catch (Exception e) { // catch all other exceptions and throw custom exception
-            throw new WorkspacesException(e.getMessage());
-        }
-        
-        PortalInfo portalInfo = new PortalInfo();
-        portalInfo.setPersonId(user.getPersonId());
-        portalInfo.getDocuments().put(workspace.getDescription(), assignments);
-        String json;
-        try {
-            json = portalInfo.toJson();
-        } catch (JSONException ex) {
-            throw new WorkspacesException(ex.getMessage());
-        }
-        
-        return json;
-        
+
+        Query query = this.em.createQuery(
+                "select r.document.contextType, r.document.documentNo, "
+                + "r.document.docType, r.document.shortDescr, "
+                + "r.document.docText, r.document.docUrl "
+                + "from Membership m "
+                + "inner join m.workspace AS w "
+                + "inner join w.references AS r "
+                + "where m.membershipPK.personId = :personId "
+                + "AND w.workspaceId = :workspaceId "
+                + "ORDER BY r.document.shortDescr"
+        );
+
+        query.setParameter("personId", personId);
+        query.setParameter("workspaceId", workspaceId);
+
+        Collection<Object> documents = query.getResultList();
+
+        return documents;
+
     }
-        class PortalInfo implements Serializable {
 
-        private BigDecimal personId; 
-        private HashMap<String, ArrayList<Object>> documents = new HashMap<>();     
 
-        public PortalInfo() {
+    /**
+     * Get all documents for the portal for the specified person
+     *
+     * @param personId
+     * @return A JSON string containing document descriptions for all
+ documents found.
+     */
+    public Collection<Object> getPersonalWorkspaceDocuments(BigDecimal personId) {
+
+        if (personId == null) {
+            throw new IllegalArgumentException("getPortalDocuments - personId is null");
         }
 
-        public BigDecimal getPersonId() {
-            return personId;
-        }
+        Query query = this.em.createQuery(
+                "select r.document.contextType, r.document.documentNo, "
+                + "r.document.docType, r.document.shortDescr, "
+                + "r.document.docText, r.document.docUrl "
+                + "from Membership m "
+                + "inner join m.workspace AS w "
+                + "inner join w.references AS r "
+                + "where m.membershipPK.personId = :personId "
+                + "AND w.workspaceType = 'GTIG' "
+                + "AND r.document.contextType = 'CTSC' "
+                + "ORDER BY r.document.shortDescr"
+        );
 
-        public void setPersonId(BigDecimal personId) {
-            this.personId = personId;
-        }
+        query.setParameter("personId", personId);
+        Collection<Object> documents = query.getResultList();
 
+        return documents;
 
-        
-
-        public HashMap<String, ArrayList<Object>> getDocuments() {
-            return documents;
-        }
-
-        public void setDocuments(HashMap<String, ArrayList<Object>> documents) {
-            this.documents = documents;
-        }
-
-        
-        public String toJson() throws JSONException {
-            JSONUtilities jsonUtiltities = new JSONUtilities();
-            String jsonString = jsonUtiltities.stringify(this);
-            return jsonString;
-        }
-        
-        
     }
+
+    /**
+     * Get all documents for the portal for the specified person
+     *
+     * @param personId
+     * @return A JSON string containing document descriptions for all
+ documents found.
+     */
+    @Override
+    public Collection<Object> getallPersonalEventsAndGrades(BigDecimal personId) {
+        if (personId == null) {
+            throw new IllegalArgumentException("getallEventsAndGrades - personId is null");
+        }
+
+        Query query = this.em.createQuery(
+                "select r.document.contextType, r.document.documentNo, "
+                + "r.document.docType, r.document.shortDescr, "
+                + "r.document.docText, r.document.docUrl "
+                + "from Membership m "
+                + "inner join m.workspace AS w "
+                + "inner join w.references AS r "
+                + "where m.membershipPK.personId = :personId "
+                + "AND r.document.contextType in ('CTFG', 'CTEV') "
+                + "ORDER BY r.document.contextType"
+        );
+
+        query.setParameter("personId", personId);
+        Collection<Object> documents = query.getResultList();
+
+        return documents;
+
+    }
+    
+    public String getGUID() {
+        Query query = em.createNativeQuery("SELECT SYS_GUID() FROM dual;");
+        String guid = (String) query.getSingleResult();
+        return guid;
+    }
+    
 }
