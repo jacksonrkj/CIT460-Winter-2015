@@ -5,34 +5,31 @@
  */
 package byui.cit460.workspaces.ejb;
 
-
-import byui.cit460.workspaces.data.DocItem;
 import byui.cit460.workspaces.data.Person;
+import byui.cit460.workspaces.ejb.javabeans.DocumentList;
 import byui.cit460.workspaces.exceptions.WorkspacesException;
-import java.io.Serializable;
-import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
-import org.quickconnect.json.JSONException;
-import org.quickconnect.json.JSONUtilities;
 
 /**
  *
  * @author jacksonrkj
  */
 @Stateless
-public class PersonFacade extends AbstractFacade<Person> implements PersonFacadeRemote {
+public class PersonFacade extends AbstractFacade<Person> implements byui.cit460.workspaces.ejb.PersonFacadeRemote {
+   
     @PersistenceContext(unitName = "WorkSpacesEJBPU")
     private EntityManager em;
-
+    
+    @EJB
+    private DocumentFacadeRemote documentFacade;
+     
     @Override
     protected EntityManager getEntityManager() {
         return em;
@@ -42,22 +39,11 @@ public class PersonFacade extends AbstractFacade<Person> implements PersonFacade
         super(Person.class);
     }
     
+    public HashMap<String, Object> authenticate(String username, String password) throws WorkspacesException {
     
-    /**
-     * Authenticate user at login in and get all information for the portal
-     * @param username
-     * @param password
-     * @return a JSON object containing all of the objects for the main portal
-     * @throws WorkspacesException 
-     */
-    @Override
-    public String authenticate(String username, String password) throws WorkspacesException {
-   
-        Person person = null;
-        String portalDocuments = "";
-        Collection<Object> workspaces;
-        Collection<Object> gradesEvents;
-
+        Person person = null;  
+        HashMap<String, Object> portalInfo  = new HashMap<>();
+        
         if (username == null || password == null) {
             throw new WorkspacesException("Invalid username and/or password");
         }
@@ -72,118 +58,23 @@ public class PersonFacade extends AbstractFacade<Person> implements PersonFacade
         
         try {
             person = (Person) query.getSingleResult(); 
-        } catch (NoResultException nre) { // thrown if no records found
+        } catch (NoResultException nre) {
             throw new WorkspacesException("Invalid username and/or password");
-        } catch (Exception e) { // catch all other exceptions and throw custom exception
+        } catch (Exception e) {
             throw new WorkspacesException(e.getMessage());
         }
         
         // get all portal documents
+        Collection<Object> eventsAndGrades = documentFacade.getallPersonalEventsAndGrades(person.getPersonId());     
+        Collection<Object> personalWorkspaceDocuments = documentFacade.getPersonalWorkspaceDocuments(person.getPersonId());
+        DocumentList documentList = new DocumentList();
+        documentList.add(personalWorkspaceDocuments);
+        documentList.add(eventsAndGrades);
         
-        // Get the Persons Workspace 
-        Query queryWorkspace = em.createQuery("SELECT r.document.documentNo, r.document.contextType, r.document.shortDescr FROM Membership AS m "
-                + "INNER JOIN m.workspace as w "
-                + "INNER JOIN w.references as r "
-                + "WHERE m.membershipPK.personId = :personid "
-                + "AND w.workspaceType = 'GTIG' "
-                + "ORDER BY r.document.shortDescr");
+        portalInfo.put("person", person);
+        portalInfo.put("documents", documentList);
         
-       queryWorkspace.setParameter("personid", person.getPersonId()); 
-       
-       
-       
-       try{
-           workspaces = (Collection<Object>) queryWorkspace.getResultList();
-        }
-        catch (Exception e) { // catch all other exceptions and throw custom exception
-            throw new WorkspacesException(e.getMessage());
-        }
-       
-       Query grades = em.createQuery("SELECT DISTINCT r.document.documentNo, r.document.contextType, r.document.shortDescr FROM Membership AS m "
-               + "INNER JOIN m.workspace AS w "
-               + "INNER JOIN w.references AS r "
-               + "WHERE m.membershipPK.personId = :personId "
-               + "AND r.document.contextType  IN ('CTFG', 'CTEV') "
-               + "ORDER BY r.document.contextType");
-       
-       grades.setParameter("personId", person.getPersonId());
-       
-       try{
-           gradesEvents = (Collection<Object>) grades.getResultList();
-       }
-       catch (Exception e) { // catch all other exceptions and throw custom exception
-            throw new WorkspacesException(e.getMessage());
-        }
-       
-        PortalInfo portalDocs = new PortalInfo();
-        portalDocs.setPersonId(person.getPersonId());
-        
-        ArrayList<DocItem> sections = new ArrayList<>(); 
-        ArrayList<DocItem> userGrades = new ArrayList<>(); 
-        ArrayList<DocItem> events = new ArrayList<>();
-       
-        for (Object obj : workspaces) {
-            Object[] objValues = (Object[]) obj;
-            sections.add(new DocItem((String) objValues[0], (String) objValues[2]));
-        }
-        
-        for(Object obj: gradesEvents){
-            Object[] objValues = (Object[]) obj;
-            String contextType = (String) objValues[1];
-            if(contextType.equals("CTFG")){
-                userGrades.add(new DocItem((String)objValues[0], (String)objValues[2]));
-            }
-            else
-                events.add(new DocItem((String)objValues[0], (String)objValues[2]));
-        }
-         
-       portalDocs.getDocuments().put("grades", userGrades);
-       portalDocs.getDocuments().put("events", events);
-       portalDocs.getDocuments().put("sections", sections);
-       
-        try {
-            portalDocuments = portalDocs.toJson();
-        } catch (JSONException ex) {
-            throw new WorkspacesException(ex.getMessage());
-        }
-       
-        return portalDocuments;
-    }
-    
-    class PortalInfo implements Serializable {
-
-        private BigDecimal personId; 
-        private HashMap<String, ArrayList<DocItem>> documents = new HashMap<>();     
-
-        public PortalInfo() {
-        }
-
-        public BigDecimal getPersonId() {
-            return personId;
-        }
-
-        public void setPersonId(BigDecimal personId) {
-            this.personId = personId;
-        }
-
-
-        
-
-        public HashMap<String, ArrayList<DocItem>> getDocuments() {
-            return documents;
-        }
-
-        public void setDocuments(HashMap<String, ArrayList<DocItem>> documents) {
-            this.documents = documents;
-        }
-
-        
-        public String toJson() throws JSONException {
-            JSONUtilities jsonUtiltities = new JSONUtilities();
-            String jsonString = jsonUtiltities.stringify(this);
-            return jsonString;
-        }
-        
+        return portalInfo;
     }
     
 }
