@@ -5,9 +5,9 @@
  */
 package byui.cit460.workspaces.ejb;
 
-
 import byui.cit460.workspaces.data.Person;
 import byui.cit460.workspaces.exceptions.WorkspacesException;
+import java.util.HashMap;
 import java.util.List;
 import javax.ejb.Remote;
 
@@ -32,6 +32,8 @@ public interface PersonFacadeRemote {
 
     int count();
 
-    public String authenticate(String username, String password) throws WorkspacesException;
+    public HashMap<String, Object> authenticate(String username, String password) throws WorkspacesException;
+
+   
     
 }

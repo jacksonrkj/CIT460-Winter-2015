@@ -6,6 +6,8 @@
 package byui.cit460.workspaces.ejb;
 
 import byui.cit460.workspaces.data.Document;
+import java.math.BigDecimal;
+import java.util.Collection;
 import java.util.List;
 import javax.ejb.Remote;
 
@@ -29,5 +31,11 @@ public interface DocumentFacadeRemote {
     List<Document> findRange(int[] range);
 
     int count();
+
+    public Collection<Object> getallPersonalEventsAndGrades(BigDecimal personId);
+
+    public Collection<Object> getAllWorkSpaceDocuments(BigDecimal personId, BigDecimal workspaceId);
+
+    public Collection<Object> getPersonalWorkspaceDocuments(BigDecimal personId);
     
 }
