@@ -5,13 +5,9 @@
  */
 package byui.cit460.workspaces.ejb;
 
-import byui.cit460.workspaces.data.Membership;
 import byui.cit460.workspaces.data.Workgroup;
 import byui.cit460.workspaces.data.Workspace;
 import byui.cit460.workspaces.exceptions.WorkspacesException;
-import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.util.Collection;
 import java.util.List;
 import javax.ejb.Remote;
 
