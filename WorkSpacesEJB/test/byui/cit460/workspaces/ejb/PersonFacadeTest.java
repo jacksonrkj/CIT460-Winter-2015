@@ -6,7 +6,7 @@
 package byui.cit460.workspaces.ejb;
 
 import byui.cit460.workspaces.data.Person;
-import byui.cit460.workspaces.ejb.javabeans.DocumentList;
+import byui.cit460.workspaces.javabeans.DocumentList;
 import java.util.HashMap;
 import javax.ejb.embeddable.EJBContainer;
 import org.junit.AfterClass;
