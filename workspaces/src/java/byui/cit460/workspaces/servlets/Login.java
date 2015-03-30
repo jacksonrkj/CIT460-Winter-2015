@@ -15,6 +15,7 @@ import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -49,19 +50,31 @@ public class Login extends HttpServlet {
         HashMap<String, Object> portalInfo;
         String json = null;
         try {
-            portalInfo = personFacade.authenticate("flintstonef", "pebbles");
+            // get user name and password parameters
+            
+            String username = request.getParameter("username");
+            String password = request.getParameter("password");
+            
+            portalInfo = personFacade.authenticate(username, password);
+            
             Person person = (Person) portalInfo.get("person");
             DocumentList documentList = (DocumentList) portalInfo.get("documents");
-            JSONUtilities jsonUtilities = new JSONUtilities();
-            json = jsonUtilities.stringify(documentList);
+            json = JSONUtilities.stringify(documentList);
+            
+            // add personId to session for further authentication
+            request.getSession().setAttribute("personId", person.getPersonId());
+            request.setAttribute("documents", documentList);
+            RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/html/portal.html");
+            dispatcher.forward(request, response);
         } catch (WorkspacesException wse) {
             System.out.println(wse.getMessage());
-            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, wse);
-        } catch (JSONException jse) {
+            
+        } catch (Exception jse) {
             System.out.println(jse.getMessage());
             Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, jse);
         }
 
+        
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
             /* TODO output your page here. You may use following sample code. */
