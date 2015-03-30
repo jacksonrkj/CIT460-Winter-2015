@@ -7,10 +7,9 @@ package byui.cit460.workspaces.servlets;
 
 import byui.cit460.workspaces.data.Person;
 import byui.cit460.workspaces.ejb.PersonFacadeRemote;
-import byui.cit460.workspaces.ejb.javabeans.DocumentList;
 import byui.cit460.workspaces.exceptions.WorkspacesException;
+import byui.cit460.workspaces.javabeans.DocumentList;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -21,7 +20,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.quickconnect.json.JSONException;
 import org.quickconnect.json.JSONUtilities;
 
 
@@ -50,45 +48,50 @@ public class Login extends HttpServlet {
         HashMap<String, Object> portalInfo;
         String json = null;
         try {
-            // get user name and password parameters
-            
+            // get input parameters from the HttpRequest object
             String username = request.getParameter("username");
             String password = request.getParameter("password");
             
+            // determine and call the business method
             portalInfo = personFacade.authenticate(username, password);
             
+            // get the person and documents from portalInfo returned
             Person person = (Person) portalInfo.get("person");
             DocumentList documentList = (DocumentList) portalInfo.get("documents");
-            json = JSONUtilities.stringify(documentList);
             
-            // add personId to session for further authentication
+            // create json string for list of documents.
+            json = JSONUtilities.stringify(documentList); 
+            
+            // save the personId in the session attributes for  authentications 
+            // on subsequent HTTPRequest
             request.getSession().setAttribute("personId", person.getPersonId());
+            
+            // save the document list in the request attributes to be retrieved
+            // by the jsp page building the next view (portal view)
             request.setAttribute("documents", documentList);
+            
+            // get a dispatcher for the url of the portal page and forward the
+            // the request and response objects to the specified url
             RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/html/portal.html");
             dispatcher.forward(request, response);
+            
         } catch (WorkspacesException wse) {
+            // Error logging in (invalid username and/or password.
+            // Save error message as an attribute in the request object
+            request.setAttribute("errorMsg", wse.getMessage());
             System.out.println(wse.getMessage());
             
-        } catch (Exception jse) {
+            // get dispatcher for the url of the login page and forward on to that page
+            RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/index.jsp");
+            dispatcher.forward(request, response);
+            
+        } catch (Exception jse) { // Unexpected error
             System.out.println(jse.getMessage());
             Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, jse);
+            jse.printStackTrace();
         }
 
         
-        response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html>");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet Login</title>");
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet Login at " + request.getContextPath() + "</h1>");
-            out.println("<p>" + json + "</p>");
-            out.println("</body>");
-            out.println("</html>");
-        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
