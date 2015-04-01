@@ -6,122 +6,53 @@
 package byui.cit460.workspaces.javabeans;
 
 import java.io.Serializable;
-import java.util.Objects;
+import java.util.HashMap;
+import org.quickconnect.json.JSONString;
 
 /**
  *
  * @author jacksonrkj
  */
 public class DocItem implements Serializable {
-    
-    private String documentNo;
-    private String docType;
-    private String description;
-    private String text;
-    private String url;
-    
-    public DocItem(String text) {
-        this.text = text;
+    HashMap<String, Object> document = new HashMap<>();
+
+ 
+    public DocItem(String shortDescription) {
+        this.document.put("shortDescription", shortDescription);
     }
      
-    public DocItem(String documentNo, String description) {
-        this.documentNo = documentNo;
-        this.description = description;
+    public DocItem(String documentNo, String shortDescription) {
+        this.document.put("documentNo", documentNo);
+        this.document.put("shortDescription", shortDescription);
     }
 
 
-    public DocItem(String documentNo, String docType, String description, String text, String url) {
-        this.documentNo = documentNo;
-        this.docType = docType;
-        this.description = description;
-        this.text = text;
-        this.url = url;
-    }
-
-    
-    
-
-    public String getDocumentNo() {
-        return documentNo;
-    }
-
-    public void setDocumentNo(String documentNo) {
-        this.documentNo = documentNo;
-    }
-
-    public String getDocType() {
-        return docType;
-    }
-
-    public void setDocType(String docType) {
-        this.docType = docType;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    public String getText() {
-        return text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
-    }
-
-    @Override
-    public int hashCode() {
-        int hash = 3;
-        hash = 97 * hash + Objects.hashCode(this.documentNo);
-        hash = 97 * hash + Objects.hashCode(this.docType);
-        hash = 97 * hash + Objects.hashCode(this.description);
-        hash = 97 * hash + Objects.hashCode(this.text);
-        hash = 97 * hash + Objects.hashCode(this.url);
-        return hash;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (obj == null) {
-            return false;
+    public DocItem(String documentNo, String docType, String shortDescription, String text, String url) {
+        if (documentNo != null) {
+            this.document.put("documentNo", documentNo);
         }
-        if (getClass() != obj.getClass()) {
-            return false;
+        if (docType != null) {
+            this.document.put("docType", docType);
         }
-        final DocItem other = (DocItem) obj;
-        if (!Objects.equals(this.documentNo, other.documentNo)) {
-            return false;
+        if (shortDescription != null) {
+            this.document.put("shortDescription", shortDescription);
         }
-        if (!Objects.equals(this.docType, other.docType)) {
-            return false;
+        if (url != null) {
+            this.document.put("url", url);
         }
-        if (!Objects.equals(this.description, other.description)) {
-            return false;
+        if (text != null) {
+            if (docType.equals("JSON")) {
+                JSONString jsonString = new JSONString(text);
+                this.document.put("text", jsonString);
+            }
+            else {
+                this.document.put("text", text);
+            }
         }
-        if (!Objects.equals(this.text, other.text)) {
-            return false;
-        }
-        if (!Objects.equals(this.url, other.url)) {
-            return false;
-        }
-        return true;
     }
 
-    
-    
-    
-    
+    public HashMap<String, Object> getDocument() {
+        return document;
+    }
     
 }
