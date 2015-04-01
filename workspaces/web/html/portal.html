@@ -39,23 +39,22 @@ and open the template in the editor.
 
     </head>
     <body ng-app="workspaces" ng-controller="personController" ng-model="mustHide">
-        <div class=" icon-bar">
-            <ul>
-                <li class="icon chat-icon" ng-click="angularJsAjax(0)"><a>Chat</a></li>
-                <li class="icon calendar-icon" ng-click="angularJsAjax(1)"><a>Calendar</a></li>
-                <li class="icon todo-icon" ng-click="angularJsAjax(2)"><a>ToDo List</a></li>
-                <li class="icon document-icon" ng-click="angularJsAjax(3)"><a>Document</a></li>
-                <li class="icon assignment-icon" ng-click="angularJsAjax(4)"><a>Assignment</a></li>
-                <li class="icon group-icon" ng-click="angularJsAjax(5)"><a>Groups</a></li>
-            </ul>
-        </div>
+
         <div class="panel panel-primary no-radius full-screen">
             <div class="panel-heading no-radius main-heading">
                 <h1 class="panel-title">Workspace Warrior</h1>
             </div>
-
-
-
+            
+            <div class=" icon-bar">
+                <ul>
+                    <li class="icon chat-icon" ng-click="angularJsAjax(0)"><a>Chat</a></li>
+                    <li class="icon calendar-icon" ng-click="angularJsAjax(1)"><a>Calendar</a></li>
+                    <li class="icon todo-icon" ng-click="angularJsAjax(2)"><a>ToDo List</a></li>
+                    <li class="icon document-icon" ng-click="angularJsAjax(3)"><a>Document</a></li>
+                    <li class="icon assignment-icon" ng-click="angularJsAjax(4)"><a>Assignment</a></li>
+                    <li class="icon group-icon" ng-click="angularJsAjax(5)"><a>Groups</a></li>
+                </ul>
+            </div>
 
             <div class="row workspaceWindow">
                 <div ng-hide="mustHide"  class="col-sm-6 " ng-bind-html="angularOutput"></div>
@@ -65,38 +64,31 @@ and open the template in the editor.
                 <div ng-hide="assignmentHide"  class="col-sm-6 " ng-bind-html="assignmentOutput"></div>
                 <div  id='calendar' ng-hide="calendarHide" class="col-xs-12 col-sm-6 "></div>
 
-
-                
-
-
             </div>
         </div>
 
         <script>
-                    $(document).ready(function () {
+            $(document).ready(function () {
 
-                        // page is now ready, initialize the calendar...
+                // page is now ready, initialize the calendar...
 
-                        $('#calendar').fullCalendar({
-                        });
+                $('#calendar').fullCalendar({
+                });
 
-                        $(document).on('click', '.removePanel', function () {
-                            $(this).closest(".panel").hide();
-                        });
-                        
-                        
-                        $(document).on('click', '#myModal .member', function () {
-                           $(this).toggleClass( "bg-success" );
-                        });
+                $(document).on('click', '.removePanel', function () {
+                    $(this).closest(".panel").hide();
+                });
 
-                        $(document).on('click', '.todo-panel input', function () {
-                           $(this).closest("span").hide();
-                        });
-                        
-                        
-                       
 
-                    });
+                $(document).on('click', '#myModal .member', function () {
+                   $(this).toggleClass( "bg-success" );
+                });
+
+                $(document).on('click', '.todo-panel input', function () {
+                   $(this).closest("span").hide();
+                });
+
+            });
 
 
 

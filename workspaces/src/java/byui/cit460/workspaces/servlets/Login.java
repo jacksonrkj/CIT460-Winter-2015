@@ -23,6 +23,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.quickconnect.json.JSONUtilities;
 
 
+
 /**
  *
  * @author jacksonrkj
@@ -47,11 +48,13 @@ public class Login extends HttpServlet {
 
         HashMap<String, Object> portalInfo;
         String json = null;
-        try {
+       
+        try {  
+
             // get input parameters from the HttpRequest object
             String username = request.getParameter("username");
             String password = request.getParameter("password");
-            
+
             // determine and call the business method
             portalInfo = personFacade.authenticate(username, password);
             
@@ -68,11 +71,11 @@ public class Login extends HttpServlet {
             
             // save the document list in the request attributes to be retrieved
             // by the jsp page building the next view (portal view)
-            request.setAttribute("documents", documentList);
+            request.setAttribute("documents", json);
             
             // get a dispatcher for the url of the portal page and forward the
             // the request and response objects to the specified url
-            RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/html/portal.html");
+            RequestDispatcher dispatcher = this.getServletContext().getRequestDispatcher("/jsp/portal.jsp");
             dispatcher.forward(request, response);
             
         } catch (WorkspacesException wse) {
@@ -94,6 +97,8 @@ public class Login extends HttpServlet {
         
     }
 
+    
+    
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
