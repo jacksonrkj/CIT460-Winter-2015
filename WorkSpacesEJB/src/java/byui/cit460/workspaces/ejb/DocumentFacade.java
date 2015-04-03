@@ -12,6 +12,16 @@ import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import byui.cit460.workspaces.data.Person;
+import byui.cit460.workspaces.data.Workspace;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.quickconnect.json.JSONException;
+
+import org.quickconnect.json.JSONUtilities;
 
 /**
  *
@@ -136,6 +146,33 @@ public class DocumentFacade extends AbstractFacade<Document> implements byui.cit
         Query query = em.createNativeQuery("SELECT SYS_GUID() FROM dual;");
         String guid = (String) query.getSingleResult();
         return guid;
+    }
+    
+    public String retrieveAssignments(BigDecimal userId, BigDecimal workspaceId) {
+        Query query = this.em.createQuery(
+                "SELECT d from Document AS d"
+                + "INNER JOIN d.references AS r"
+                + "INNER JOIN m.workspace AS w "
+                + "INNER JOIN w.memberships AS m "
+                + "WHERE m.membershipPK.personId = :personId "
+                + "AND w.workspaceId = :workspaceId "
+                + "AND d.contextType = 'CTAS ");
+        
+        query.setParameter("personId", userId);
+        query.setParameter("workspaceId", workspaceId);
+        
+        List<Document> documents;
+        documents = query.getResultList();
+        
+        
+        JSONUtilities jsonUtil = new JSONUtilities();
+        String json = "";
+        try {
+            json = jsonUtil.stringify((Serializable) documents);
+        } catch (JSONException ex) {
+            Logger.getLogger(DocumentFacade.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return json;
     }
     
 }
