@@ -6,6 +6,7 @@
 package byui.cit460.workspaces.ejb;
 
 import byui.cit460.workspaces.data.Document;
+import byui.cit460.workspaces.exceptions.WorkspacesException;
 import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.List;
@@ -37,5 +38,7 @@ public interface DocumentFacadeRemote {
     public Collection<Object> getAllWorkSpaceDocuments(BigDecimal personId, BigDecimal workspaceId);
 
     public Collection<Object> getPersonalWorkspaceDocuments(BigDecimal personId);
+
+    public List<Object> retrieveAssignments(BigDecimal userId, BigDecimal workspaceId) throws WorkspacesException;
     
 }

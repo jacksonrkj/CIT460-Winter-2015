@@ -14,6 +14,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import byui.cit460.workspaces.data.Person;
 import byui.cit460.workspaces.data.Workspace;
+import byui.cit460.workspaces.exceptions.WorkspacesException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -148,7 +149,9 @@ public class DocumentFacade extends AbstractFacade<Document> implements byui.cit
         return guid;
     }
     
-    public String retrieveAssignments(BigDecimal userId, BigDecimal workspaceId) {
+    @Override
+    public List<Object> retrieveAssignments(BigDecimal userId, BigDecimal workspaceId) throws WorkspacesException {
+        
         Query query = this.em.createQuery(
                 "SELECT d from Document AS d"
                 + "INNER JOIN d.references AS r"
@@ -161,18 +164,10 @@ public class DocumentFacade extends AbstractFacade<Document> implements byui.cit
         query.setParameter("personId", userId);
         query.setParameter("workspaceId", workspaceId);
         
-        List<Document> documents;
+        List<Object> documents;
         documents = query.getResultList();
         
-        
-        JSONUtilities jsonUtil = new JSONUtilities();
-        String json = "";
-        try {
-            json = jsonUtil.stringify((Serializable) documents);
-        } catch (JSONException ex) {
-            Logger.getLogger(DocumentFacade.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        return json;
+        return documents;
     }
     
 }

@@ -5,6 +5,7 @@
  */
 package byui.cit460.workspaces.ejb;
 
+import byui.cit460.workspaces.data.Document;
 import javax.ejb.embeddable.EJBContainer;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -13,7 +14,11 @@ import org.junit.Test;
 
 import byui.cit460.workspaces.data.Person;
 import byui.cit460.workspaces.data.Workspace;
+import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.List;
+import org.quickconnect.json.JSONException;
+import org.quickconnect.json.JSONUtilities;
 /**
  *
  * @author starr_000
@@ -49,8 +54,16 @@ public class DocumentFacadeTest {
         DocumentFacade instance = (DocumentFacade)container.getContext().lookup("java:global/classes/DocumentFacade");
         String expResult = "";
         
-        String result = instance.retrieveAssignments(user, workspace);
+        List<Object> result = instance.retrieveAssignments(user.getPersonId(), workspace.getWorkspaceId());
         
+        String json;
+        
+        JSONUtilities jsonUtil = new JSONUtilities();
+            try {
+            json = jsonUtil.stringify((Serializable) result);
+            } catch (JSONException ex) {
+                ex.printStackTrace();
+            }
         System.out.println("\n\n*********************************************************************");
         System.out.println("Person's portal assignments: \n" + result);
         System.out.println("*********************************************************************\n\n");
